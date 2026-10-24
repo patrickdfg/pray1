@@ -134,6 +134,72 @@ body:before{content:"";pointer-events:none;position:fixed;inset:0;z-index:0;opac
 }
 @media(max-width:360px){.hero{min-height:367px}.hero h1{font-size:26px}.nav{font-size:9px}.nav .ico{font-size:17px}.prayer-illustration{width:64px;min-width:64px}}
 
+
+/* Home clarity: compact landing, two-prayer preview, full features in category tabs. */
+.compact-home-hero{min-height:194px;padding:24px 37px;border-radius:27px}
+.compact-home-hero .hero-content{max-width:720px}
+.compact-home-hero .hero-content small{font-size:10px;letter-spacing:1.3px}
+.compact-home-hero h1{font-size:clamp(23px,2.5vw,33px);line-height:1.32;margin:7px 0 15px;max-width:560px}
+.compact-home-hero h1 br,.compact-home-hero p{display:none}
+.compact-home-hero .hero-buttons .primary{padding:10px 16px;font-size:12px;border-radius:14px}
+.compact-home-hero .hero-art{width:38%;right:-3%;opacity:.82}
+.home-main .section-head{margin:3px 0 12px;align-items:center;flex-direction:row}
+.home-main .section-head h2{font-size:23px}
+.home-main .section-head p{display:none}
+.home-main .section-buttons .outline{font-size:12px;padding:9px 13px}
+.home-glance{display:grid;grid-template-columns:minmax(190px,.9fr) minmax(0,1.5fr);gap:12px;margin:0 0 15px}
+.home-today,.home-categories{background:#faf9ff;border-radius:19px;border:1px solid #fff;box-shadow:0 7px 18px #07133718}
+.home-today{padding:15px 20px;display:flex;flex-direction:column;justify-content:space-between;gap:8px}
+.home-today>div:first-child{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.home-today small{font-size:12px;font-weight:800;color:#78709e}
+.home-today strong{font-size:24px;color:#6e5dc0;white-space:nowrap;line-height:1.1}
+.home-today strong span{font-size:13px;color:#9893b2;font-weight:600}
+.home-progress{height:7px;background:#e8e5f6;border-radius:10px;overflow:hidden}
+.home-progress span{display:block;height:100%;background:linear-gradient(90deg,#baacf2,#816fd1);border-radius:10px}
+.home-categories{padding:9px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.home-category{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:8px 5px;background:#f0edfc;border:1px solid #f0edfc;border-radius:14px;cursor:pointer;color:#665f92}
+.home-category:nth-child(2){background:#ecf3ff}.home-category:nth-child(3){background:#fff2e0}
+.home-category:hover{border-color:#aa9ce9}
+.home-category-icon{font-size:22px;line-height:1.1}.home-category-label{font-size:11px;font-weight:800}
+.home-category strong{font-size:13px;color:#514580}
+.home-main .preview-cards{gap:10px}
+.home-main .preview-cards .prayer-card{min-height:122px;padding:10px}
+.home-main .preview-cards .prayer-illustration{width:115px;min-width:115px;min-height:100px;font-size:39px;border-radius:16px}
+.home-main .preview-cards .prayer-body{padding:4px 2px}
+.home-main .preview-cards .prayer-card h3{margin:6px 0 4px;font-size:16px}
+.home-main .preview-cards .prayer-card p{font-size:12px;-webkit-line-clamp:1;margin-bottom:5px}
+.home-main .preview-cards .card-foot{padding-top:7px}
+.home-more{display:flex;justify-content:center;margin-top:14px}
+.home-more button{background:#ffdf91;border:0;color:#42356e;border-radius:18px;min-width:250px;padding:12px 24px;font-weight:800;cursor:pointer;box-shadow:0 7px 15px #050a2b2a}
+.home-more button:hover{background:#fff0b3}
+@media(max-width:900px){.home-glance{grid-template-columns:1fr 1.3fr}}
+@media(max-width:640px){
+ .compact-home-hero{min-height:207px;padding:22px 22px;border-radius:23px}
+ .compact-home-hero .hero-content{max-width:100%}
+ .compact-home-hero h1{font-size:25px;max-width:255px;margin:8px 0 17px}
+ .compact-home-hero .hero-buttons{position:relative;top:auto;left:auto;margin:0;gap:6px}
+ .compact-home-hero .hero-buttons .primary{padding:10px 13px;font-size:11px}
+ .compact-home-hero .hero-buttons .primary:nth-child(2){display:none}
+ .compact-home-hero .hero-art{width:77%;right:-23%;top:0;opacity:.58;height:100%}
+ .home-main .section-head{flex-direction:row;justify-content:space-between;gap:8px;margin:4px 1px 12px}
+ .home-main .section-head h2{font-size:21px}
+ .home-main .section-buttons .outline{padding:8px 10px;font-size:11px;white-space:nowrap}
+ .home-glance{grid-template-columns:1fr;gap:8px;margin-bottom:12px}
+ .home-today{padding:11px 14px;border-radius:17px;gap:8px}
+ .home-today small{font-size:11px}.home-today strong{font-size:22px}
+ .home-categories{padding:7px;border-radius:17px;gap:6px}
+ .home-category{padding:6px 4px;border-radius:11px;gap:1px}
+ .home-category-icon{font-size:19px}.home-category-label{font-size:10px}.home-category strong{font-size:12px}
+ .home-main .preview-cards .prayer-card{min-height:103px;padding:9px;gap:10px}
+ .home-main .preview-cards .prayer-illustration{width:64px;min-width:64px;min-height:92px;font-size:29px;border-radius:13px}
+ .home-main .preview-cards .prayer-card h3{font-size:14px;margin:5px 0 3px}
+ .home-main .preview-cards .prayer-card p{font-size:11px;margin-bottom:4px}
+ .home-main .preview-cards .prayer-body{padding:1px 0}
+ .home-main .preview-cards .card-foot{padding-top:5px}
+ .home-more{margin-top:11px}.home-more button{width:100%;padding:11px 15px}
+}
+@media(max-width:360px){.compact-home-hero{min-height:208px}.compact-home-hero h1{font-size:23px;max-width:225px}}
+
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 </head>
@@ -183,6 +249,7 @@ function App(){
  const [user,setUser]=useState(undefined),[section,setSection]=useState("all"),[filter,setFilter]=useState("all");
  const [church,setChurch]=useState([]),[personal,setPersonal]=useState([]),[rooms,setRooms]=useState([]),[members,setMembers]=useState({}),[teams,setTeams]=useState({});
  const [modal,setModal]=useState(null),[draft,setDraft]=useState({}),[busy,setBusy]=useState(false),[toast,setToast]=useState("");
+ const [showAllHome,setShowAllHome]=useState(false);
  const [focus,setFocus]=useState(-1),[ownerMembers,setOwnerMembers]=useState({}),[showMemberRoom,setShowMemberRoom]=useState("");
  const [today,setToday]=useState(koreaToday()),[month,setMonth]=useState(koreaToday().slice(0,7)),[selectedDay,setSelectedDay]=useState(koreaToday());
  const [todayChecks,setTodayChecks]=useState([]),[monthChecks,setMonthChecks]=useState([]),[monthLoading,setMonthLoading]=useState(true),[pendingCheck,setPendingCheck]=useState("");
@@ -240,7 +307,7 @@ function App(){
  if(user===undefined)return <div className="loading"><div>🌿<p>기도의 숲을 준비하고 있어요…</p></div></div>;
  if(!user)return <div className="signin"><div className="signin-card"><div className="brand"><span className="brand-mark">✦</span> 기도의 숲</div><div className="signin-garden">🌙</div><span className="eyebrow" style={{color:"#648b70"}}>A PLACE FOR PRAYER</span><h1>오늘도 함께 기도해요</h1><p>교회의 기도, 우리 팀의 기도, 나만의 기도까지.<br/>한 공간에 모아 마음을 잇는 기도의 숲입니다.</p><button className="primary" onClick={doLogin} disabled={busy}>{busy?"로그인 중…":"G  Google 계정으로 시작하기"}</button><div className="signin-foot">Google 로그인 후 실제 기도제목이 안전하게 저장됩니다.<br/>체험용 가상 데이터는 사용하지 않습니다.</div></div>{toast&&<div className="toast">{toast}</div>}</div>;
  return <><header className="shell topbar"><div className="brand"><span className="brand-mark">✦</span> 기도의 숲</div><div className="top-actions"><div className="user-pill">{user.photoURL?<img className="avatar" src={user.photoURL} alt="프로필"/>:<div className="avatar">🌿</div>}<span>{user.displayName||user.email}{admin?" · 관리자":""}</span></div><button className="text-btn" onClick={()=>auth.signOut()}>로그아웃</button></div></header>
- <div className="shell"><section className="hero"><div className="hero-content"><small>✦ MOONLIGHT PRAYER GARDEN</small><h1>오늘도, 기도가<br/>작은 빛이 되는 밤 🌙</h1><p>고요한 마음으로 함께 기도해요.<br/>작은 기도들이 모여 아름다운 숲을 이룹니다.</p><div className="hero-buttons"><button className="primary light" onClick={focusNow}>✨ 지금 기도하기 →</button><button className="primary" style={{background:"#ffffff25",boxShadow:"none",border:"1px solid #ffffff65"}} onClick={()=>openPrayer("team")}>＋ 팀 기도 추가</button></div></div>
+ <div className="shell">{section==="all"&&<section className="hero compact-home-hero"><div className="hero-content"><small>✦ MOONLIGHT PRAYER GARDEN</small><h1>오늘도, 기도가<br/>작은 빛이 되는 밤 🌙</h1><p>고요한 마음으로 함께 기도해요.<br/>작은 기도들이 모여 아름다운 숲을 이룹니다.</p><div className="hero-buttons"><button className="primary light" onClick={focusNow}>✨ 지금 기도하기 →</button><button className="primary" style={{background:"#ffffff25",boxShadow:"none",border:"1px solid #ffffff65"}} onClick={()=>openPrayer("team")}>＋ 팀 기도 추가</button></div></div>
  <div className="hero-art" aria-hidden="true"><svg viewBox="0 0 600 340" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
   <defs>
    <radialGradient id="moonHalo"><stop offset="0%" stopColor="#fffbd8" stopOpacity=".95"/><stop offset="65%" stopColor="#fff2ab" stopOpacity=".24"/><stop offset="100%" stopColor="#fff6bc" stopOpacity="0"/></radialGradient>
@@ -269,23 +336,19 @@ function App(){
    <circle cx="17" cy="34" r="26" fill="#ffe891" opacity=".16"/>
   </g>
   <g fill="#ffde8d"><circle cx="151" cy="174" r="3"/><circle cx="274" cy="209" r="2.6"/><circle cx="566" cy="194" r="3"/><circle cx="313" cy="134" r="2.6"/><circle cx="85" cy="196" r="2.3"/></g>
- </svg></div></section>
- <div className="main-layout"><aside className="sidebar"><div className="side-title">PRAYER MENU</div>{[["all","🏡","나의 기도"],["church","⛪","교회 기도"],["team","🤝","팀 기도"],["personal","🌷","개인 기도"],["calendar","🗓️","기도 달력"],["rooms","🌲","기도방"]].map(([id,ico,label])=><button key={id} className={"nav "+(section===id?"active":"")} onClick={()=>{setSection(id);setFilter("all");}}><span className="ico">{ico}</span>{label}</button>)}<div className="sideline"></div><div className="side-note"><strong>🌱 오늘의 작은 실천</strong>하나의 기도제목이라도 마음을 담아 기도해 보세요.</div></aside>
- <main>{section==="calendar"?<CalendarView month={month} setMonth={setMonth} selectedDay={selectedDay} setSelectedDay={setSelectedDay} today={today} checks={monthChecks} all={all} checkId={checkId} isChecked={isChecked} togglePrayer={togglePrayer} pendingCheck={pendingCheck} monthLoading={monthLoading}/>:section!=="rooms"?<><div className="section-head"><div><h2>{section==="all"?"오늘의 기도":section==="church"?"교회 기도제목":section==="team"?"기도팀과 함께": "개인 기도제목"}</h2><p>{section==="all"?"교회, 팀, 개인 기도를 한눈에 확인해요.":section==="church"?"교회가 함께 품는 기도제목입니다.":section==="team"?"내가 속한 모든 기도팀의 기도제목입니다.":"나만의 기도제목을 기록하고 돌아보세요."}</p></div><div className="section-buttons">{section==="personal"&&<button className="outline" onClick={()=>openPrayer("personal")}>＋ 개인 기도</button>}{section==="all"&&<button className="outline" onClick={()=>openPrayer("team")}>＋ 팀 기도</button>}{section==="church"&&admin&&<button className="primary" onClick={()=>openPrayer("church")}>＋ 교회 기도</button>}{section==="team"&&joined.length>0&&<button className="primary" onClick={()=>openPrayer("team")}>＋ 팀 기도</button>}</div></div>
- {section==="all"&&<div className="overview-grid">
- <div className="overview-left">
-  <div className="today-progress"><div className="summary"><small>✨ 오늘의 작은 기도</small><strong>{todayCount} / {all.length}개 완료</strong></div><div className="today-track"><span style={{width:(all.length?Math.min(100,Math.round(todayCount/all.length*100)):0)+"%"}}/></div><button className="outline" onClick={()=>{setMonth(today.slice(0,7));setSelectedDay(today);setSection("calendar");}}>🗓 달력 보기</button></div>
-  <div className="stats">
-   <div className="stat"><div className="progress-ring" style={{background:"conic-gradient(#aa97ed "+(church.length?Math.round(church.filter(p=>isChecked(p,today)).length/church.length*100):0)+"%,#e7e3f8 0)"}}><div className="progress-ring-inner"><strong>{church.filter(p=>isChecked(p,today)).length}/{church.length}</strong><span>완료</span></div></div><span className="mini">교회 기도</span><p>공동 기도제목</p></div>
-   <div className="stat"><div className="progress-ring" style={{background:"conic-gradient(#87a8ef "+(allTeam.length?Math.round(allTeam.filter(p=>isChecked(p,today)).length/allTeam.length*100):0)+"%,#e5edf9 0)"}}><div className="progress-ring-inner"><strong>{allTeam.filter(p=>isChecked(p,today)).length}/{allTeam.length}</strong><span>완료</span></div></div><span className="mini">팀 기도</span><p>함께하는 기도</p></div>
-   <div className="stat"><div className="progress-ring" style={{background:"conic-gradient(#f0c277 "+(personal.length?Math.round(personal.filter(p=>isChecked(p,today)).length/personal.length*100):0)+"%,#f6ecdb 0)"}}><div className="progress-ring-inner"><strong>{personal.filter(p=>isChecked(p,today)).length}/{personal.length}</strong><span>완료</span></div></div><span className="mini">개인 기도</span><p>나만의 기도</p></div>
-  </div>
- </div>
- <MoonMiniCalendar today={today} checks={month===today.slice(0,7)?monthChecks:[]} onChoose={day=>{setMonth(day.slice(0,7));setSelectedDay(day);setSection("calendar");}} onOpen={()=>{setMonth(today.slice(0,7));setSelectedDay(today);setSection("calendar");}}/>
+ </svg></div></section>}
+ <div className="main-layout"><aside className="sidebar"><div className="side-title">PRAYER MENU</div>{[["all","🏡","나의 기도"],["church","⛪","교회 기도"],["team","🤝","팀 기도"],["personal","🌷","개인 기도"],["calendar","🗓️","기도 달력"],["rooms","🌲","기도방"]].map(([id,ico,label])=><button key={id} className={"nav "+(section===id?"active":"")} onClick={()=>{setSection(id);setFilter("all");if(id==="all")setShowAllHome(false);}}><span className="ico">{ico}</span>{label}</button>)}<div className="sideline"></div><div className="side-note"><strong>🌱 오늘의 작은 실천</strong>하나의 기도제목이라도 마음을 담아 기도해 보세요.</div></aside>
+ <main className={section==="all"?"home-main":""}>{section==="calendar"?<CalendarView month={month} setMonth={setMonth} selectedDay={selectedDay} setSelectedDay={setSelectedDay} today={today} checks={monthChecks} all={all} checkId={checkId} isChecked={isChecked} togglePrayer={togglePrayer} pendingCheck={pendingCheck} monthLoading={monthLoading}/>:section!=="rooms"?<><div className="section-head"><div><h2>{section==="all"?"오늘의 기도":section==="church"?"교회 기도제목":section==="team"?"기도팀과 함께": "개인 기도제목"}</h2><p>{section==="all"?"오늘 필요한 기도부터 시작해요.":section==="church"?"교회가 함께 품는 기도제목입니다.":section==="team"?"내가 속한 모든 기도팀의 기도제목입니다.":"나만의 기도제목을 기록하고 돌아보세요."}</p></div><div className="section-buttons">{section==="personal"&&<button className="outline" onClick={()=>openPrayer("personal")}>＋ 개인 기도</button>}{section==="all"&&<button className="outline" onClick={()=>{setMonth(today.slice(0,7));setSelectedDay(today);setSection("calendar");}}>🗓 달력 보기</button>}{section==="church"&&admin&&<button className="primary" onClick={()=>openPrayer("church")}>＋ 교회 기도</button>}{section==="team"&&joined.length>0&&<button className="primary" onClick={()=>openPrayer("team")}>＋ 팀 기도</button>}</div></div>
+
+ {section==="all"&&<div className="home-glance">
+   <div className="home-today"><div><small>✨ 오늘의 기도 현황</small><strong>{todayCount}<span> / {all.length}개</span></strong></div><div className="home-progress"><span style={{width:(all.length?Math.min(100,Math.round(todayCount/all.length*100)):0)+"%"}}/></div></div>
+   <div className="home-categories">
+    {[["church","⛪","교회 기도",church],["team","🤝","팀 기도",allTeam],["personal","🌷","개인 기도",personal]].map(([id,ico,label,items])=><button key={id} className="home-category" onClick={()=>{setSection(id);setFilter("all");}}><span className="home-category-icon">{ico}</span><span className="home-category-label">{label}</span><strong>{items.filter(p=>isChecked(p,today)).length}/{items.length}</strong></button>)}
+   </div>
  </div>}
- {section==="all"&&<div className="tabs">{[["all","전체 "+all.length],["church","교회"],["team","기도팀"],["personal","개인"]].map(([id,label])=><button key={id} className={"chip "+(filter===id?"active":"")} onClick={()=>setFilter(id)}>{label}</button>)}</div>}
+ {section==="all"&&showAllHome&&<div className="tabs">{[["all","전체 "+all.length],["church","교회"],["team","기도팀"],["personal","개인"]].map(([id,label])=><button key={id} className={"chip "+(filter===id?"active":"")} onClick={()=>setFilter(id)}>{label}</button>)}</div>}
  {section==="team"&&<div className="tabs">{joined.length?joined.map(r=><button className="chip" key={r.id} onClick={()=>openPrayer("team",r.id)}>＋ {r.name} 기도 작성</button>):<button className="chip" onClick={()=>setSection("rooms")}>기도방 참가하기 →</button>}</div>}
- <div className="cards">{shown.length?shown.map(p=><Card key={p.kind+":"+p.roomId+":"+p.id} p={p}/>):<div className="empty"><div className="plant">🌱</div><h3>아직 심어진 기도제목이 없어요</h3><p>{section==="church"&&!admin?"교회 관리자가 기도제목을 등록하면 이곳에 표시됩니다.":section==="team"?"기도방에 참가하거나 팀 기도를 등록해 보세요.":"첫 번째 기도제목을 작성해 보세요."}</p>{section==="team"?<button className="primary" onClick={()=>setSection("rooms")}>기도방 살펴보기</button>:(section==="all"||section==="personal")?<button className="primary" onClick={()=>openPrayer(section==="all"?"team":"personal")}>＋ {section==="all"?"팀 기도":"개인 기도"} 등록</button>:admin?<button className="primary" onClick={()=>openPrayer("church")}>＋ 교회 기도 등록</button>:null}</div>}</div>
+ <div className={"cards "+(section==="all"&&!showAllHome?"preview-cards":"")}>{shown.length?(section==="all"&&!showAllHome?shown.slice(0,2):shown).map(p=><Card key={p.kind+":"+p.roomId+":"+p.id} p={p}/>):<div className="empty"><div className="plant">🌱</div><h3>아직 심어진 기도제목이 없어요</h3><p>{section==="church"&&!admin?"교회 관리자가 기도제목을 등록하면 이곳에 표시됩니다.":section==="team"?"기도방에 참가하거나 팀 기도를 등록해 보세요.":"첫 번째 기도제목을 작성해 보세요."}</p>{section==="team"?<button className="primary" onClick={()=>setSection("rooms")}>기도방 살펴보기</button>:(section==="all"||section==="personal")?<button className="primary" onClick={()=>openPrayer(section==="all"?"team":"personal")}>＋ {section==="all"?"팀 기도":"개인 기도"} 등록</button>:admin?<button className="primary" onClick={()=>openPrayer("church")}>＋ 교회 기도 등록</button>:null}</div>}</div>{section==="all"&&all.length>2&&<div className="home-more"><button onClick={()=>{setShowAllHome(v=>!v);setFilter("all");}}>{showAllHome?"⌃ 간단히 보기":"전체 기도제목 "+all.length+"개 보기 →"}</button></div>}
  </>:<><div className="section-head"><div><h2>기도방</h2><p>함께 기도할 팀을 만들고, 비밀번호로 참가할 수 있어요.</p></div><button className="primary" onClick={openRoom}>＋ 기도방 만들기</button></div>{rooms.length===0?<div className="empty"><div className="plant">🌳</div><h3>첫 번째 기도방을 만들어 보세요</h3><p>기도방 이름과 기간, 비밀번호를 정하고 팀원들과 기도제목을 나눠요.</p><button className="primary" onClick={openRoom}>기도방 만들기</button></div>:<div className="room-cards">{rooms.map(r=>{const owner=r.ownerId===me,inside=owner||members[r.id];return <article className="room-card" key={r.id}><div className="room-icon">🌿</div><h3>{r.name}</h3><p>{r.startDate||r.endDate?"기도 기간 : "+(fmt(r.startDate)||"시작일 미정")+" ~ "+(fmt(r.endDate)||"종료일 미정"):"기간 제한 없는 기도방"}<br/>팀장 : {r.ownerName||"기도팀장"}</p><div className="room-row"><span className={"room-badge "+(inside?"":"lock")}>{owner?"👑 내가 만든 방":inside?"✓ 참가 중":"🔒 비밀번호 필요"}</span>{!inside?<button className="primary" onClick={()=>openJoin(r)}>기도방 참가하기</button>:<button className="outline" onClick={()=>{setSection("team");openPrayer("team",r.id);}}>＋ 팀 기도 작성</button>}{inside&&!owner&&<button className="tiny-btn" onClick={()=>leaveRoom(r.id)}>탈퇴</button>}{owner&&<button className="tiny-btn" onClick={()=>setShowMemberRoom(showMemberRoom===r.id?"":r.id)}>팀원 관리</button>}</div>{owner&&showMemberRoom===r.id&&<div className="members"><strong style={{fontSize:12}}>팀원 목록 ({(ownerMembers[r.id]||[]).length}명)</strong>{(ownerMembers[r.id]||[]).map(m=><div className="member" key={m.id}><span>{m.displayName||"팀원"}</span><button className="tiny-btn" onClick={()=>kick(r.id,m.id)}>가입 해지</button></div>)}{!(ownerMembers[r.id]||[]).length&&<p>가입한 팀원이 없습니다.</p>}<button className="outline danger" style={{marginTop:10,fontSize:12}} onClick={()=>closeRoom(r)}>기도방 종료</button></div>}</article>;})}</div>}<div className="notice">🔐 기도방 비밀번호는 8자 이상으로 설정해 주세요. 비밀번호를 아는 사람도 Google 로그인 후 참가해야 합니다.</div></>}
  </main></div></div>
  {modal&&<div className="modal-bg" onMouseDown={e=>{if(e.target===e.currentTarget&&!busy)setModal(null);}}><div className="modal"><div className="modal-head"><h2>{modal==="room"?"🌳 기도방 만들기":modal==="join"?"🔒 기도방 참가하기":draft.id?"✏️ 기도제목 수정":draft.kind==="team"?"🤝 팀 기도제목 등록":draft.kind==="church"?"⛪ 교회 기도제목 등록":"🌷 개인 기도 등록"}</h2><button className="x" onClick={()=>setModal(null)} aria-label="닫기">×</button></div>
