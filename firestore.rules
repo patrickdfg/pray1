@@ -60,6 +60,26 @@ service cloud.firestore {
       allow update: if signedIn() && request.auth.uid == userId && updatedPrayer();
       allow delete: if signedIn() && request.auth.uid == userId;
     }
+    // Daily prayer check-ins are private to the signed-in user.
+    // Checking a shared church/team prayer never changes another member's record.
+    match /users/{userId}/prayerChecks/{checkId} {
+      allow read: if signedIn() && request.auth.uid == userId;
+      allow create: if signedIn() && request.auth.uid == userId &&
+        request.resource.data.keys().hasOnly([
+          'day','kind','prayerId','roomId','titleSnapshot','roomName','checkedAt'
+        ]) &&
+        request.resource.data.day is string &&
+        request.resource.data.day.size() == 10 &&
+        request.resource.data.kind in ['church','team','personal'] &&
+        request.resource.data.prayerId is string &&
+        request.resource.data.roomId is string &&
+        request.resource.data.titleSnapshot is string &&
+        request.resource.data.titleSnapshot.size() <= 100 &&
+        request.resource.data.roomName is string &&
+        request.resource.data.checkedAt == request.time;
+      allow update: if false;
+      allow delete: if signedIn() && request.auth.uid == userId;
+    }
     match /rooms/{roomId} {
       allow read: if signedIn();
       allow create: if signedIn() &&
