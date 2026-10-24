@@ -1,795 +1,116 @@
-<!DOCTYPE html>
-<html lang="ko" class="h-full">
+<!doctype html>
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>기도의 자리 - 연합 기도 공간</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <!-- Babel -->
-    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Google Identity Services for Google Login -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Pretendard', sans-serif; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
-    </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#174d40">
+<title>기도의 숲 | 함께 기도하는 공간</title>
+<meta name="description" content="교회와 기도팀, 나의 기도제목을 한곳에서 모아 매일 기도하는 공간">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.25.7/babel.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<style>
+:root{color-scheme:light;--forest:#174d40;--deep:#103c33;--mint:#e7f1e9;--cream:#fbf9f2;--ink:#263932;--muted:#74817a;--line:#e8eae3;--sun:#ffdf9c;--radius:24px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f8f8f2;color:var(--ink);font-family:"DM Sans","Noto Sans KR",sans-serif;-webkit-font-smoothing:antialiased}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.53;cursor:not-allowed}a{color:inherit;text-decoration:none}
+.shell{max-width:1230px;margin:0 auto;padding:0 30px}.topbar{height:86px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:11px;font-size:20px;font-weight:800;letter-spacing:-.7px}.brand-mark{width:38px;height:38px;border-radius:14px;background:var(--forest);color:#fff;display:grid;place-items:center;box-shadow:0 4px 12px #1f58442d;font-size:22px}.top-actions{display:flex;align-items:center;gap:12px}.user-pill{display:flex;align-items:center;gap:9px;background:white;border:1px solid var(--line);padding:6px 12px 6px 6px;border-radius:50px;font-size:13px;color:var(--muted)}.avatar{border-radius:50%;width:30px;height:30px;object-fit:cover;background:#d7e8db;display:grid;place-items:center;font-weight:700;color:var(--forest)}
+.text-btn{border:0;background:transparent;color:#7b837e;font-size:13px;font-weight:700;padding:9px}.primary{border:0;border-radius:14px;padding:13px 20px;background:var(--forest);color:#fff;font-weight:800;box-shadow:0 7px 15px #174d4029;transition:.18s}.primary:hover{background:#246751;transform:translateY(-1px)}.primary.light{background:#fff;color:var(--forest);box-shadow:none}.primary:disabled{transform:none}.outline{border:1px solid #dbe2db;background:#fff;border-radius:13px;padding:11px 15px;color:var(--forest);font-weight:750}.outline:hover{border-color:#9cb6a4;background:#f9fdf9}.danger{color:#af514a;border-color:#efd6d2}
+.hero{min-height:295px;position:relative;overflow:hidden;background:var(--forest);border-radius:32px;padding:43px 52px;color:white;box-shadow:0 13px 25px #144b3a15;display:flex;align-items:center}.hero-content{position:relative;z-index:2;max-width:610px}.hero small,.eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:800;opacity:.76}.hero h1{font-size:clamp(25px,3.8vw,43px);letter-spacing:-2px;margin:15px 0;line-height:1.43}.hero p{font-size:14px;line-height:1.85;color:#e0ebe2;margin:0 0 23px}.hero-art{position:absolute;right:0;bottom:0;width:400px;height:290px;opacity:.97}.hero-art svg{width:100%;height:100%}.hero-buttons{display:flex;flex-wrap:wrap;gap:10px}
+.main-layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:30px;margin-top:31px;padding-bottom:60px}.sidebar{background:#fff;border:1px solid var(--line);border-radius:25px;padding:23px 12px;height:fit-content;position:sticky;top:14px}.side-title{font-size:11px;color:#adb5ad;letter-spacing:1px;font-weight:800;margin:4px 17px 13px}.nav{border:0;border-radius:13px;width:100%;display:flex;align-items:center;gap:14px;text-align:left;padding:14px 15px;margin:3px 0;background:transparent;color:#67756d;font-weight:700;font-size:14px}.nav .ico{font-size:19px;width:23px;text-align:center}.nav.active{color:var(--forest);background:#eaf4ed}.nav:hover:not(.active){background:#f8faf5}.sideline{height:1px;background:var(--line);margin:20px 12px}.side-note{margin:14px 9px 0;padding:16px;border-radius:17px;background:#f5f8f3;font-size:12px;color:#819087;line-height:1.9}.side-note strong{display:block;color:#4b7660;font-size:13px}
+.section-head{display:flex;gap:12px;justify-content:space-between;align-items:center;margin:6px 0 19px}.section-head h2{font-size:23px;letter-spacing:-.8px;margin:0 0 5px}.section-head p{margin:0;color:#8a958d;font-size:13px}.section-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 28px}.stat{background:white;border:1px solid var(--line);border-radius:21px;padding:22px;position:relative;overflow:hidden;min-height:127px}.stat:after{content:'';position:absolute;right:-21px;top:-22px;width:94px;height:94px;background:#f3f8f0;border-radius:50%}.stat .mini{font-size:23px;z-index:1;position:relative}.stat strong{font-size:30px;color:var(--deep);margin-left:13px;position:relative;z-index:1}.stat p{font-size:13px;color:#859189;margin:8px 0 0;font-weight:700}.stat:nth-child(2):after{background:#fcf2df}.stat:nth-child(3):after{background:#f2edfa}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.chip{background:white;border:1px solid #e0e8de;border-radius:30px;padding:9px 16px;font-size:13px;font-weight:700;color:#78857d}.chip.active{background:var(--forest);color:white;border-color:var(--forest)}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.prayer-card{background:#fff;border:1px solid var(--line);padding:23px;border-radius:22px;display:flex;flex-direction:column;min-height:210px;transition:box-shadow .17s,transform .17s}.prayer-card:hover{box-shadow:0 10px 26px #264b3314;transform:translateY(-1px)}.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.tag{font-size:11px;font-weight:800;padding:6px 10px;border-radius:20px;background:#e8f1ea;color:#43795c;white-space:nowrap}.tag.team{background:#fff1df;color:#9a743d}.tag.personal{background:#efeafd;color:#7e65a5}.date{font-size:11px;color:#a0a9a2}.prayer-card h3{margin:18px 0 9px;line-height:1.45;font-size:17px;letter-spacing:-.4px}.prayer-card p{font-size:13px;line-height:1.85;color:#7b877d;white-space:pre-wrap;overflow-wrap:anywhere;flex:1;margin:0 0 14px}.card-foot{border-top:1px solid #f0f1eb;padding-top:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}.card-foot .room-name{font-size:11px;color:#9ba69b}.card-actions{display:flex;gap:2px}.tiny-btn{border:0;background:transparent;color:#687e70;padding:6px 8px;font-size:12px;font-weight:800;border-radius:8px}.tiny-btn:hover{background:#f1f7f1}.empty{border-radius:24px;background:#fff;border:1px dashed #d4e1d6;text-align:center;padding:53px 25px;color:#8a978e;grid-column:1/-1}.empty .plant{font-size:55px}.empty h3{color:#405e4d;margin:12px 0 7px;font-size:18px}.empty p{font-size:13px;margin:0 0 15px;line-height:1.8}
+.room-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.room-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;position:relative}.room-card .room-icon{width:47px;height:47px;background:#e8f1e9;border-radius:17px;display:grid;place-items:center;font-size:26px;margin-bottom:15px}.room-card h3{font-size:18px;margin:0 0 7px}.room-card p{margin:0 0 19px;color:#909d92;font-size:12px;line-height:1.8}.room-card .room-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.room-badge{display:inline-flex;background:#ebf5ea;color:#43795c;font-size:11px;padding:6px 9px;border-radius:18px;font-weight:800}.room-badge.lock{background:#fff3de;color:#9c7b4a}
+.notice{padding:14px 18px;background:#fff9e9;border:1px solid #f6e8c3;color:#8e7b53;border-radius:15px;font-size:12px;margin:16px 0}.members{margin-top:16px;padding:12px 0 0;border-top:1px solid var(--line)}.member{display:flex;justify-content:space-between;align-items:center;padding:9px 0;color:#65776c;font-size:12px}
+.modal-bg{position:fixed;inset:0;background:#102b24a8;backdrop-filter:blur(5px);z-index:50;display:flex;justify-content:center;align-items:center;padding:20px;overflow-y:auto}.modal{width:min(100%,545px);max-height:calc(100dvh - 36px);overflow-y:auto;border-radius:26px;padding:28px 32px;background:#fff;box-shadow:0 24px 75px #12352655}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.modal h2{font-size:23px;letter-spacing:-.6px;margin:0}.x{border:0;background:#f4f6f2;border-radius:50%;width:34px;height:34px;font-size:19px;color:#74837a}.field{display:flex;flex-direction:column;gap:8px;margin-bottom:17px}.field label{font-size:13px;font-weight:800;color:#516558}.field input,.field select,.field textarea{border:1px solid #e0e9e0;background:#fdfefd;border-radius:13px;padding:13px 14px;width:100%;outline:none;transition:border .2s;color:#283b2c}.field input:focus,.field select:focus,.field textarea:focus{border-color:#559a74}.field textarea{min-height:120px;resize:vertical;line-height:1.8}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:25px}.form-help{font-size:11px;color:#89998e;line-height:1.8}.error-line{color:#b74e4e;font-size:12px;line-height:1.5;margin:4px 0 13px}
+.focus-screen{position:fixed;inset:0;z-index:60;background:radial-gradient(ellipse at 80% 5%,#3f7968 0%,#174d40 40%,#123d32 100%);color:white;display:flex;flex-direction:column;padding:25px}.focus-head{display:flex;justify-content:space-between;align-items:center;max-width:800px;width:100%;margin:0 auto}.focus-center{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;max-width:850px;width:100%;margin:auto}.focus-center .circle{font-size:40px;opacity:.9;margin-bottom:19px}.focus-center h2{font-size:clamp(24px,4.8vw,42px);line-height:1.5;margin:22px 0;letter-spacing:-1px}.focus-center p{line-height:2.1;white-space:pre-wrap;overflow-wrap:anywhere;font-size:clamp(15px,2.7vw,20px);color:#e9f5e9;max-height:42vh;overflow:auto}.focus-controls{width:100%;display:flex;justify-content:center;gap:12px;margin:35px auto 0}.focus-bottom{text-align:center;font-size:12px;opacity:.6;margin:0 0 25px}.counter{font-weight:800;background:#ffffff24;padding:8px 13px;border-radius:20px;font-size:12px}
+.toast{position:fixed;z-index:99;bottom:25px;left:50%;transform:translateX(-50%);padding:13px 19px;background:#153e32;color:white;border-radius:15px;font-size:13px;font-weight:700;box-shadow:0 8px 30px #123b3255;max-width:92vw;line-height:1.6}
+.signin{min-height:100dvh;background:#f7f9f3;display:flex;align-items:center;justify-content:center;padding:20px}.signin-card{width:min(460px,100%);border:1px solid #e3e9df;border-radius:34px;background:white;padding:43px 34px;text-align:center;box-shadow:0 16px 60px #15483410}.signin-garden{font-size:73px;background:#eaf4eb;border-radius:50%;width:144px;height:144px;margin:8px auto 24px;display:grid;place-items:center}.signin h1{font-size:30px;margin:4px 0 15px;letter-spacing:-1px}.signin p{font-size:14px;color:#7d8d82;line-height:2;margin:0 0 28px}.signin .primary{width:100%;font-size:15px;padding:17px}.signin-foot{font-size:11px;color:#a8b1a8;margin-top:22px;line-height:1.8}.signin .brand{justify-content:center;margin-bottom:22px}.loading{min-height:100dvh;display:grid;place-items:center;text-align:center;color:var(--forest);font-weight:800}
+@media(max-width:850px){.shell{padding:0 18px}.main-layout{grid-template-columns:1fr;gap:18px;margin-top:20px}.sidebar{position:static;display:flex;align-items:center;gap:4px;overflow-x:auto;padding:8px;border-radius:18px}.side-title,.sideline,.side-note{display:none}.nav{flex-shrink:0;width:auto;justify-content:center;gap:6px;padding:11px 12px;font-size:12px;margin:0}.nav .ico{font-size:17px;width:auto}.hero{padding:30px;min-height:245px}.hero-art{opacity:.28;right:-95px}.user-pill span{display:none}}
+@media(max-width:560px){.topbar{height:70px}.brand{font-size:17px}.brand-mark{width:34px;height:34px}.text-btn{font-size:11px;padding:5px}.user-pill{padding:4px}.avatar{width:28px;height:28px}.hero{border-radius:23px;min-height:265px;padding:28px}.hero h1{font-size:27px}.hero p{font-size:12px}.hero .primary{padding:11px 15px;font-size:12px}.section-head{align-items:flex-start}.section-head h2{font-size:21px}.section-buttons .outline{padding:9px 12px;font-size:12px}.stats{gap:9px;margin-bottom:23px}.stat{border-radius:17px;padding:16px 12px;min-height:114px}.stat strong{font-size:23px;margin-left:5px}.stat p{font-size:11px}.stat .mini{font-size:18px}.cards,.room-cards{grid-template-columns:1fr}.prayer-card{min-height:185px;padding:20px}.room-card{padding:20px}.modal{padding:22px 20px;border-radius:22px}.field-row{gap:9px}.focus-controls .primary,.focus-controls .outline{padding:11px 13px;font-size:12px}.focus-screen{padding:16px}}
+</style>
 </head>
-<body class="h-full bg-slate-50 text-slate-800">
-    <div id="root" class="h-full"></div>
-
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-
-        function App() {
-            // 사용자 및 인증 상태
-            const [user, setUser] = useState(null); // { email, name }
-            const [isAdmin, setIsAdmin] = useState(false);
-
-            // 화면 전환 상태 ('home', 'room-list', 'create-room', 'room-view', 'focus-mode')
-            const [view, setView] = useState('home');
-
-            // 방 목록 및 현재 방 상태
-            const [rooms, setRooms] = useState([]);
-            const [currentRoom, setCurrentRoom] = useState(null);
-            
-            // 모달 및 입력 상태 (방 만들기)
-            const [newRoomName, setNewRoomName] = useState('');
-            const [newRoomPassword, setNewRoomPassword] = useState('');
-            const [joinPasswordInput, setJoinPasswordInput] = useState('');
-            const [selectedRoomToJoin, setSelectedRoomToJoin] = useState(null);
-
-            // 기도제목 데이터 상태 (현재 방 내부)
-            const [churchPrayers, setChurchPrayers] = useState([]); // 교회 기도 (관리자만 작성)
-            const [teamPrayers, setTeamPrayers] = useState([]);     // 팀 기도
-            const [personalPrayers, setPersonalPrayers] = useState([]);// 개인 기도
-
-            // 기도 작성 폼 상태 (기도이름, 기간, 기도제목)
-            const [prayerModalOpen, setPrayerModalOpen] = useState(false);
-            const [prayerCategory, setPrayerCategory] = useState('church'); // 'church', 'team', 'personal'
-            const [prayerName, setPrayerName] = useState('');
-            const [prayerPeriod, setPrayerPeriod] = useState('');
-            const [prayerContent, setPrayerContent] = useState('');
-            const [editPrayerId, setEditPrayerId] = useState(null);
-
-            // 집중기도 모드 인덱스
-            const [focusIndex, setFocusIndex] = useState(0);
-
-            // 토스트 알림
-            const [toast, setToast] = useState('');
-            const showToast = (msg) => {
-                setToast(msg);
-                setTimeout(() => setToast(''), 3000);
-            };
-
-            // 초기 로컬 스토리지 데이터 로드 (방 목록)
-            useEffect(() => {
-                const savedRooms = localStorage.getItem('prayer_all_rooms');
-                if (savedRooms) {
-                    setRooms(JSON.parse(savedRooms));
-                } else {
-                    // 기본 샘플 방
-                    const defaultRooms = [
-                        { id: 'room-1', name: '사랑의교회 중보기도팀', password: '1234', host: 'egibynote105g@gmail.com' }
-                    ];
-                    setRooms(defaultRooms);
-                    localStorage.setItem('prayer_all_rooms', JSON.stringify(defaultRooms));
-                }
-            }, []);
-
-            // 구글 로그인 초기화 및 핸들러
-            useEffect(() => {
-                // 테스트나 개발 환경을 위한 수동 로그인 버튼도 겸용 제공
-                window.handleCredentialResponse = (response) => {
-                    try {
-                        const payload = JSON.parse(atob(response.credential.split('.')[1]));
-                        const email = payload.email;
-                        const name = payload.name;
-                        setUser({ email, name });
-                        if (email === 'egibynote105g@gmail.com') {
-                            setIsAdmin(true);
-                            showToast('관리자(egibynote105g@gmail.com) 계정으로 로그인되었습니다.');
-                        } else {
-                            setIsAdmin(false);
-                            showToast(`${name}님 환영합니다!`);
-                        }
-                    } catch (e) {
-                        showToast('로그인 처리 중 오류가 발생했습니다.');
-                    }
-                };
-
-                if (window.google) {
-                    try {
-                        window.google.accounts.id.initialize({
-                            client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com", // 필요시 실제 클라이언트 ID 입력
-                            callback: window.handleCredentialResponse
-                        });
-                    } catch (e) {}
-                }
-            }, []);
-
-            // 간편 테스트용 강제 관리자/일반 로그인 버튼 (OAuth 미설정 환경 대비)
-            const handleManualLogin = (asAdmin = false) => {
-                if (asAdmin) {
-                    setUser({ email: 'egibynote105g@gmail.com', name: '교회 관리자' });
-                    setIsAdmin(true);
-                    showToast('관리자 계정으로 로그인되었습니다.');
-                } else {
-                    setUser({ email: 'user@gmail.com', name: '일반 성도' });
-                    setIsAdmin(false);
-                    showToast('성도 계정으로 로그인되었습니다.');
-                }
-            };
-
-            const handleLogout = () => {
-                setUser(null);
-                setIsAdmin(false);
-                setView('home');
-                setCurrentRoom(null);
-                showToast('로그아웃되었습니다.');
-            };
-
-            // 방 데이터 동기화
-            useEffect(() => {
-                if (!currentRoom) return;
-                const rId = currentRoom.id;
-                const savedChurch = localStorage.getItem(`room_${rId}_church`);
-                const savedTeam = localStorage.getItem(`room_${rId}_team`);
-                const savedPersonal = localStorage.getItem(`room_${rId}_personal_${user?.email || 'guest'}`);
-
-                if (savedChurch) setChurchPrayers(JSON.parse(savedChurch));
-                else {
-                    const initialChurch = [{ id: 'c1', name: '성전 건축과 부흥', period: '2026년 상반기', content: '모든 공정이 은혜 가운데 마무리되게 하소서.', answered: false, author: '관리자' }];
-                    setChurchPrayers(initialChurch);
-                    localStorage.setItem(`room_${rId}_church`, JSON.stringify(initialChurch));
-                }
-
-                if (savedTeam) setTeamPrayers(JSON.parse(savedTeam));
-                else setTeamPrayers([]);
-
-                if (savedPersonal) setPersonalPrayers(JSON.parse(savedPersonal));
-                else setPersonalPrayers([]);
-            }, [currentRoom, user]);
-
-            // 방 데이터 저장
-            useEffect(() => {
-                if (!currentRoom) return;
-                localStorage.setItem(`room_${currentRoom.id}_church`, JSON.stringify(churchPrayers));
-            }, [churchPrayers, currentRoom]);
-
-            useEffect(() => {
-                if (!currentRoom) return;
-                localStorage.setItem(`room_${currentRoom.id}_team`, JSON.stringify(teamPrayers));
-            }, [teamPrayers, currentRoom]);
-
-            useEffect(() => {
-                if (!currentRoom || !user) return;
-                localStorage.setItem(`room_${currentRoom.id}_personal_${user.email}`, JSON.stringify(personalPrayers));
-            }, [personalPrayers, currentRoom, user]);
-
-            // 방 만들기 제출
-            const handleCreateRoomSubmit = (e) => {
-                e.preventDefault();
-                if (!newRoomName.trim()) {
-                    showToast('방 이름을 입력해주세요.');
-                    return;
-                }
-                const newRoom = {
-                    id: 'room-' + Date.now(),
-                    name: newRoomName.trim(),
-                    password: newRoomPassword.trim(),
-                    host: user?.email || 'unknown'
-                };
-                const updatedRooms = [...rooms, newRoom];
-                setRooms(updatedRooms);
-                localStorage.setItem('prayer_all_rooms', JSON.stringify(updatedRooms));
-                
-                setNewRoomName('');
-                setNewRoomPassword('');
-                setCurrentRoom(newRoom);
-                setView('room-view');
-                showToast(`'${newRoom.name}' 방이 생성되었습니다.`);
-            };
-
-            // 방 참여 비밀번호 확인
-            const handleJoinRoomAttempt = (e) => {
-                e.preventDefault();
-                if (!selectedRoomToJoin) return;
-                if (selectedRoomToJoin.password && selectedRoomToJoin.password !== joinPasswordInput) {
-                    showToast('비밀번호가 일치하지 않습니다.');
-                    return;
-                }
-                setCurrentRoom(selectedRoomToJoin);
-                setSelectedRoomToJoin(null);
-                setJoinPasswordInput('');
-                setView('room-view');
-                showToast(`'${selectedRoomToJoin.name}'에 입장했습니다.`);
-            };
-
-            // 기도제목 저장
-            const handleSavePrayer = (e) => {
-                e.preventDefault();
-                if (!prayerName.trim()) {
-                    showToast('기도 제목 이름을 입력해주세요.');
-                    return;
-                }
-
-                const newItem = {
-                    id: editPrayerId || Date.now().toString(),
-                    name: prayerName,
-                    period: periodFormatted(prayerPeriod),
-                    content: prayerContent,
-                    answered: false,
-                    author: user?.name || '성도'
-                };
-
-                if (prayerCategory === 'church') {
-                    if (!isAdmin) {
-                        showToast('교회 기도제목은 관리자(egibynote105g@gmail.com)만 작성할 수 있습니다.');
-                        return;
-                    }
-                    if (editPrayerId) setChurchPrayers(churchPrayers.map(p => p.id === editPrayerId ? {...newItem, answered: p.answered} : p));
-                    else setChurchPrayers([newItem, ...churchPrayers]);
-                } else if (prayerCategory === 'team') {
-                    if (editPrayerId) setTeamPrayers(teamPrayers.map(p => p.id === editPrayerId ? {...newItem, answered: p.answered} : p));
-                    else setTeamPrayers([newItem, ...teamPrayers]);
-                } else {
-                    if (editPrayerId) setPersonalPrayers(personalPrayers.map(p => p.id === editPrayerId ? {...newItem, answered: p.answered} : p));
-                    else setPersonalPrayers([newItem, ...personalPrayers]);
-                }
-
-                showToast('기도제목이 안전하게 저장되었습니다.');
-                setPrayerModalOpen(false);
-                resetPrayerForm();
-            };
-
-            const periodFormatted = (val) => val.trim() || '상시기도';
-
-            const resetPrayerForm = () => {
-                setPrayerName('');
-                setPrayerPeriod('');
-                setPrayerContent('');
-                setEditPrayerId(null);
-            };
-
-            // 삭제 및 응답 토글
-            const handleDeletePrayer = (cat, id) => {
-                if (cat === 'church' && !isAdmin) {
-                    showToast('권한이 없습니다.');
-                    return;
-                }
-                if (!window.confirm('정말 삭제하시겠습니까?')) return;
-                if (cat === 'church') setChurchPrayers(churchPrayers.filter(p => p.id !== id));
-                else if (cat === 'team') setTeamPrayers(teamPrayers.filter(p => p.id !== id));
-                else setPersonalPrayers(personalPrayers.filter(p => p.id !== id));
-                showToast('삭제되었습니다.');
-            };
-
-            const handleToggleAnswer = (cat, id) => {
-                if (cat === 'church') {
-                    setChurchPrayers(churchPrayers.map(p => p.id === id ? { ...p, answered: !p.answered } : p));
-                } else if (cat === 'team') {
-                    setTeamPrayers(teamPrayers.map(p => p.id === id ? { ...p, answered: !p.answered } : p));
-                } else {
-                    setPersonalPrayers(personalPrayers.map(p => p.id === id ? { ...p, answered: !p.answered } : p));
-                }
-            };
-
-            // 로그인 안된 경우 로그인 화면 (메인)
-            if (!user) {
-                return (
-                    <div className="min-h-full flex items-center justify-center p-4 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-100">
-                        <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border border-emerald-100 animate-fade-in text-center">
-                            <div className="inline-flex items-center justify-center w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full mb-4 shadow-inner text-3xl">
-                                🙏
-                            </div>
-                            <h1 className="text-2xl font-bold text-slate-800">기도의 자리</h1>
-                            <p className="text-sm text-slate-500 mt-1 mb-8">교회, 팀, 개인의 기도제목을 나누고 연합하는 공간</p>
-
-                            <div className="space-y-3">
-                                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-600 mb-4">
-                                    관리자 계정(<span className="font-bold text-emerald-600">egibynote105g@gmail.com</span>)으로 로그인 시 <strong>교회 공용 기도제목</strong> 작성 권한이 부여됩니다.
-                                </div>
-
-                                <button 
-                                    onClick={() => handleManualLogin(true)}
-                                    className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-2xl shadow-lg shadow-emerald-600/20 transition flex items-center justify-center space-x-2 text-sm"
-                                >
-                                    <span>🔑 관리자로 간편 로그인</span>
-                                </button>
-                                <button 
-                                    onClick={() => handleManualLogin(false)}
-                                    className="w-full py-3.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-2xl shadow-lg transition flex items-center justify-center space-x-2 text-sm"
-                                >
-                                    <span>👤 성도(일반)로 간편 로그인</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
-            // 홈 화면 (첫 페이지: 공통 교회 기도제목 및 방 참여/만들기)
-            if (view === 'home') {
-                return (
-                    <div className="min-h-full flex flex-col bg-slate-50">
-                        {toast && (
-                            <div className="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 bg-slate-900/90 text-white px-5 py-3 rounded-2xl shadow-2xl text-sm font-medium animate-fade-in backdrop-blur-md">
-                                {toast}
-                            </div>
-                        )}
-
-                        <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-20">
-                            <div className="flex items-center space-x-3">
-                                <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
-                                    🙏
-                                </div>
-                                <div>
-                                    <h1 className="font-bold text-slate-800">기도의 자리</h1>
-                                    <p className="text-xs text-slate-500">
-                                        {user.name} ({user.email}) {isAdmin && <span className="text-emerald-600 font-bold">[관리자]</span>}
-                                    </p>
-                                </div>
-                            </div>
-                            <button onClick={handleLogout} className="text-xs text-slate-400 hover:text-slate-600 px-3 py-1.5 rounded-lg border border-slate-200">
-                                로그아웃
-                            </button>
-                        </header>
-
-                        <main className="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 space-y-6">
-                            {/* 방 만들기 / 참여하기 버튼 박스 */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <button 
-                                    onClick={() => setView('create-room')}
-                                    className="p-6 bg-emerald-600 hover:bg-emerald-700 text-white rounded-3xl shadow-xl shadow-emerald-600/20 text-left transition flex flex-col justify-between"
-                                >
-                                    <div>
-                                        <span className="text-2xl mb-2 block">✨</span>
-                                        <h3 className="text-lg font-bold">새로운 기도방 만들기</h3>
-                                        <p className="text-xs text-emerald-100 mt-1">우리 구역이나 소그룹을 위한 방을 개설하세요.</p>
-                                    </div>
-                                    <span className="mt-4 text-xs font-semibold underline">방 만들기 바로가기 &rarr;</span>
-                                </button>
-
-                                <button 
-                                    onClick={() => setView('room-list')}
-                                    className="p-6 bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 rounded-3xl shadow-sm text-left transition flex flex-col justify-between"
-                                >
-                                    <div>
-                                        <span className="text-2xl mb-2 block">🚪</span>
-                                        <h3 className="text-lg font-bold">기도방 참여하기</h3>
-                                        <p className="text-xs text-slate-500 mt-1">생성된 기도방 목록을 보고 비밀번호를 입력해 입장하세요.</p>
-                                    </div>
-                                    <span className="mt-4 text-xs font-semibold text-emerald-600">방 목록 보기 ({rooms.length}개) &rarr;</span>
-                                </button>
-                            </div>
-
-                            {/* 첫페이지 핵심: 공통 교회 기도제목 */}
-                            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
-                                <div className="flex items-center justify-between mb-6">
-                                    <div>
-                                        <span className="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold">공통 안내</span>
-                                        <h2 className="text-xl font-bold text-slate-800 mt-2">⛪ 전체 교회 공용 기도제목</h2>
-                                        <p className="text-xs text-slate-500 mt-1">교회 전체 성도가 함께 합심하여 기도하는 제목입니다.</p>
-                                    </div>
-                                    {isAdmin && (
-                                        <button 
-                                            onClick={() => {
-                                                setPrayerCategory('church');
-                                                resetPrayerForm();
-                                                setPrayerModalOpen(true);
-                                            }}
-                                            className="px-4 py-2.5 bg-emerald-600 text-white text-xs font-semibold rounded-xl shadow-md hover:bg-emerald-700"
-                                        >
-                                            + 교회 기도 작성 (관리자 전용)
-                                        </button>
-                                    )}
-                                </div>
-
-                                <div className="space-y-3">
-                                    {rooms.length > 0 && (
-                                        <div className="text-xs text-slate-400 mb-2">현재 기본 연합방의 공용 기도제목입니다.</div>
-                                    )}
-                                    <div className="bg-emerald-50/50 rounded-2xl p-5 border border-emerald-100">
-                                        <div className="flex items-center justify-between mb-2">
-                                            <div className="flex items-center space-x-2">
-                                                <span className="px-2 py-0.5 bg-emerald-600 text-white text-[10px] font-bold rounded">상시기도</span>
-                                                <h3 className="font-bold text-slate-800">나라와 민족, 그리고 한국교회를 위한 기도</h3>
-                                            </div>
-                                            <span className="text-xs text-slate-400">작성: 관리자</span>
-                                        </div>
-                                        <p className="text-sm text-slate-600 leading-relaxed">
-                                            모든 성도들이 영육간에 강건하고 세상 속에서 빛과 소금의 사명을 온전히 감당하게 하소서.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </main>
-                    </div>
-                );
-            }
-
-            // 방 만들기 화면
-            if (view === 'create-room') {
-                return (
-                    <div className="min-h-full flex items-center justify-center p-4 bg-slate-50">
-                        <div className="max-md w-full bg-white rounded-3xl shadow-xl p-8 border border-slate-200 animate-fade-in">
-                            <button onClick={() => setView('home')} className="text-xs text-slate-400 hover:text-slate-600 mb-4 block">
-                                &larr; 홈으로 돌아가기
-                            </button>
-                            <h2 className="text-xl font-bold text-slate-800 mb-2">✨ 새로운 기도방 만들기</h2>
-                            <p className="text-xs text-slate-500 mb-6">팀원들과 공유할 방 이름과 비밀번호를 설정하세요.</p>
-
-                            <form onSubmit={handleCreateRoomSubmit} className="space-y-4">
-                                <div>
-                                    <label className="block text-xs font-semibold text-slate-600 uppercase mb-1">방 이름</label>
-                                    <input 
-                                        type="text" 
-                                        value={newRoomName}
-                                        onChange={(e) => setNewRoomName(e.target.value)}
-                                        placeholder="예: 청년부 3셀 기도방"
-                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-xs font-semibold text-slate-600 uppercase mb-1">방 비밀번호 (참여용)</label>
-                                    <input 
-                                        type="password" 
-                                        value={newRoomPassword}
-                                        onChange={(e) => setNewRoomPassword(e.target.value)}
-                                        placeholder="비밀번호 4자리"
-                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                                    />
-                                </div>
-                                <button 
-                                    type="submit"
-                                    className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-sm shadow-md"
-                                >
-                                    방 만들고 입장하기
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                );
-            }
-
-            // 방 참여하기 화면 (방 목록 표시 후 클릭하여 비밀번호 입력)
-            if (view === 'room-list') {
-                return (
-                    <div className="min-h-full flex flex-col bg-slate-50 p-4 sm:p-8">
-                        <div className="max-w-xl w-full mx-auto">
-                            <button onClick={() => setView('home')} className="text-xs text-slate-400 hover:text-slate-600 mb-4 block">
-                                &larr; 홈으로 돌아가기
-                            </button>
-                            <h2 className="text-xl font-bold text-slate-800 mb-2">🚪 기도방 참여하기</h2>
-                            <p className="text-xs text-slate-500 mb-6">참여할 방을 선택하고 비밀번호를 입력해주세요.</p>
-
-                            {selectedRoomToJoin ? (
-                                <div className="bg-white rounded-3xl p-6 shadow-xl border border-emerald-200 animate-fade-in">
-                                    <h3 className="font-bold text-slate-800 mb-1">'{selectedRoomToJoin.name}' 입장</h3>
-                                    <p className="text-xs text-slate-400 mb-4">방 비밀번호를 입력하세요.</p>
-                                    <form onSubmit={handleJoinRoomAttempt} className="space-y-4">
-                                        <input 
-                                            type="password" 
-                                            value={joinPasswordInput}
-                                            onChange={(e) => setJoinPasswordInput(e.target.value)}
-                                            placeholder="비밀번호"
-                                            className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                                        />
-                                        <div className="flex space-x-2">
-                                            <button 
-                                                type="button" 
-                                                onClick={() => setSelectedRoomToJoin(null)}
-                                                className="flex-1 py-2.5 bg-slate-100 rounded-xl text-xs font-semibold text-slate-600"
-                                            >
-                                                취소
-                                            </button>
-                                            <button 
-                                                type="submit" 
-                                                className="flex-1 py-2.5 bg-emerald-600 rounded-xl text-xs font-semibold text-white shadow-md"
-                                            >
-                                                입장하기
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            ) : (
-                                <div className="space-y-3">
-                                    {rooms.map(room => (
-                                        <div 
-                                            key={room.id}
-                                            onClick={() => setSelectedRoomToJoin(room)}
-                                            className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:border-emerald-400 transition cursor-pointer flex items-center justify-between"
-                                        >
-                                            <div>
-                                                <h3 className="font-bold text-slate-800">{room.name}</h3>
-                                                <p className="text-xs text-slate-400 mt-0.5">개설자: {room.host}</p>
-                                            </div>
-                                            <span className="px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-xl">참여하기 &rarr;</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                );
-            }
-
-            // 집중 기도 모드 뷰
-            if (view === 'focus-mode') {
-                const allPrayers = [...churchPrayers, ...teamPrayers, ...personalPrayers];
-                return (
-                    <div className="min-h-full flex flex-col bg-slate-900 text-white p-4 sm:p-8 justify-between">
-                        <div className="max-w-xl w-full mx-auto flex justify-between items-center py-4">
-                            <span className="px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-xs font-bold uppercase tracking-wider">
-                                온전한 기도의 시간
-                            </span>
-                            <button onClick={() => setView('room-view')} className="text-xs text-slate-400 hover:text-white px-3 py-1.5 bg-slate-800 rounded-lg">
-                                나가기
-                            </button>
-                        </div>
-
-                        <div className="max-w-xl w-full mx-auto my-auto py-8">
-                            {allPrayers.length === 0 ? (
-                                <div className="text-center py-12">
-                                    <p className="text-slate-500 text-sm">기도제목이 없습니다.</p>
-                                </div>
-                            ) : (
-                                <div className="bg-slate-800 rounded-3xl p-8 border border-slate-700 shadow-2xl animate-fade-in">
-                                    <div className="flex justify-between items-center mb-6">
-                                        <span className="text-xs text-emerald-400 font-bold">
-                                            {focusIndex + 1} / {allPrayers.length} 번째 기도제목
-                                        </span>
-                                        <span className="px-2.5 py-1 bg-slate-700 text-slate-300 text-xs rounded-lg">
-                                            기간: {allPrayers[focusIndex]?.period}
-                                        </span>
-                                    </div>
-                                    <h2 className="text-2xl font-bold mb-4 leading-snug">{allPrayers[focusIndex]?.name}</h2>
-                                    <p className="text-slate-300 text-base leading-relaxed bg-slate-900/50 p-5 rounded-2xl border border-slate-700/50 whitespace-pre-wrap">
-                                        {allPrayers[focusIndex]?.content || '내용이 없습니다.'}
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="max-w-xl w-full mx-auto flex justify-between items-center py-4">
-                            <button 
-                                onClick={() => setFocusIndex(prev => (prev > 0 ? prev - 1 : allPrayers.length - 1))}
-                                className="px-5 py-3 bg-slate-800 hover:bg-slate-700 rounded-2xl text-sm font-semibold transition"
-                            >
-                                &larr; 이전 기도
-                            </button>
-                            <button 
-                                onClick={() => setFocusIndex(prev => (prev < allPrayers.length - 1 ? prev + 1 : 0))}
-                                className="px-5 py-3 bg-emerald-600 hover:bg-emerald-500 rounded-2xl text-sm font-semibold transition shadow-lg shadow-emerald-600/30"
-                            >
-                                다음 기도 &rarr;
-                            </button>
-                        </div>
-                    </div>
-                );
-            }
-
-            // 특정 방 내부 뷰 (교회 / 팀 / 개인 탭)
-            const [activeTab, setActiveTab] = useState('church');
-
-            return (
-                <div className="min-h-full flex flex-col bg-slate-50">
-                    {toast && (
-                        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 bg-slate-900/90 text-white px-5 py-3 rounded-2xl shadow-2xl text-sm font-medium animate-fade-in">
-                            {toast}
-                        </div>
-                    )}
-
-                    <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
-                        <div className="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between">
-                            <div className="flex items-center space-x-3">
-                                <button onClick={() => setView('home')} className="text-xs text-slate-400 hover:text-slate-600 mr-1">
-                                    &larr; 방 나가기
-                                </button>
-                                <div>
-                                    <h1 className="font-bold text-slate-800">{currentRoom?.name}</h1>
-                                    <p className="text-xs text-slate-500">접속자: {user.name} {isAdmin && <span className="text-emerald-600 font-bold">[관리자]</span>}</p>
-                                </div>
-                            </div>
-                            <button 
-                                onClick={() => { setFocusIndex(0); setView('focus-mode'); }}
-                                className="px-3.5 py-2 bg-amber-500 text-white rounded-xl text-xs font-semibold shadow-md shadow-amber-500/20"
-                            >
-                                🙏 나의 기도 집중모드
-                            </button>
-                        </div>
-
-                        {/* 탭 네비게이션 */}
-                        <div className="max-w-5xl mx-auto px-4 flex space-x-2 border-t border-slate-100 py-2">
-                            <button 
-                                onClick={() => setActiveTab('church')}
-                                className={`px-4 py-2 rounded-xl text-xs font-bold transition ${activeTab === 'church' ? 'bg-emerald-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
-                            >
-                                ⛪ 교회 기도 ({churchPrayers.length})
-                            </button>
-                            <button 
-                                onClick={() => setActiveTab('team')}
-                                className={`px-4 py-2 rounded-xl text-xs font-bold transition ${activeTab === 'team' ? 'bg-emerald-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
-                            >
-                                👥 팀 기도 ({teamPrayers.length})
-                            </button>
-                            <button 
-                                onClick={() => setActiveTab('personal')}
-                                className={`px-4 py-2 rounded-xl text-xs font-bold transition ${activeTab === 'personal' ? 'bg-emerald-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
-                            >
-                                🔒 개인 기도 ({personalPrayers.length})
-                            </button>
-                        </div>
-                    </header>
-
-                    <main className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6">
-                        <div className="flex items-center justify-between mb-6">
-                            <div>
-                                <h2 className="text-xl font-bold text-slate-800">
-                                    {activeTab === 'church' && '⛪ 교회 기도제목'}
-                                    {activeTab === 'team' && '👥 팀 기도제목'}
-                                    {activeTab === 'personal' && '🔒 개인 기도제목'}
-                                </h2>
-                                <p className="text-xs text-slate-500 mt-0.5">
-                                    {activeTab === 'church' && (isAdmin ? '관리자 권한으로 교회 공용 기도제목을 작성할 수 있습니다.' : '관리자만 작성 가능한 공용 교회 기도제목입니다.')}
-                                    {activeTab === 'team' && '기도팀 멤버들과 함께 나누는 공용 기도제목입니다.'}
-                                    {activeTab === 'personal' && '나만 볼 수 있는 안전한 개인 기도보관함입니다.'}
-                                </p>
-                            </div>
-
-                            {/* 교회 기도의 경우 관리자만 작성 가능, 그외는 누구나 가능 */}
-                            {(activeTab !== 'church' || isAdmin) && (
-                                <button 
-                                    onClick={() => {
-                                        setPrayerCategory(activeTab);
-                                        resetPrayerForm();
-                                        setPrayerModalOpen(true);
-                                    }}
-                                    className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-md shadow-emerald-600/20"
-                                >
-                                    + 기도제목 작성
-                                </button>
-                            )}
-                        </div>
-
-                        {/* 리스트 출력 */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {((activeTab === 'church' ? churchPrayers : activeTab === 'team' ? teamPrayers : personalPrayers)).length === 0 ? (
-                                <div className="col-span-full bg-white rounded-2xl p-12 text-center border border-slate-200">
-                                    <p className="text-slate-400 text-sm">등록된 기도제목이 없습니다.</p>
-                                </div>
-                            ) : (
-                                (activeTab === 'church' ? churchPrayers : activeTab === 'team' ? teamPrayers : personalPrayers).map(item => (
-                                    <div key={item.id} className={`bg-white rounded-2xl p-5 border shadow-sm flex flex-col justify-between ${item.answered ? 'border-emerald-300 bg-emerald-50/20' : 'border-slate-200'}`}>
-                                        <div>
-                                            <div className="flex items-start justify-between gap-2 mb-2">
-                                                <div>
-                                                    <span className="px-2 py-0.5 bg-slate-100 text-slate-600 text-[10px] font-bold rounded mr-1">
-                                                        {item.period}
-                                                    </span>
-                                                    {item.answered && <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded">응답됨 ✨</span>}
-                                                    <h3 className="font-bold text-slate-800 text-base mt-1">{item.name}</h3>
-                                                </div>
-                                                {(activeTab !== 'church' || isAdmin) && (
-                                                    <div className="flex items-center space-x-1">
-                                                        <button 
-                                                            onClick={() => {
-                                                                setPrayerCategory(activeTab);
-                                                                setPrayerName(item.name);
-                                                                setPrayerPeriod(item.period);
-                                                                setPrayerContent(item.content);
-                                                                setEditPrayerId(item.id);
-                                                                setPrayerModalOpen(true);
-                                                            }}
-                                                            className="p-1 text-slate-400 hover:text-emerald-600 text-xs"
-                                                        >
-                                                            ✏️
-                                                        </button>
-                                                        <button 
-                                                            onClick={() => handleDeletePrayer(activeTab, item.id)}
-                                                            className="p-1 text-slate-400 hover:text-rose-600 text-xs"
-                                                        >
-                                                            🗑️
-                                                        </button>
-                                                    </div>
-                                                )}
-                                            </div>
-                                            {item.content && (
-                                                <p className="text-slate-600 text-sm mt-3 whitespace-pre-wrap leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
-                                                    {item.content}
-                                                </p>
-                                            )}
-                                        </div>
-                                        <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                                            <span className="text-xs text-slate-400">작성: {item.author}</span>
-                                            <button 
-                                                onClick={() => handleToggleAnswer(activeTab, item.id)}
-                                                className={`text-xs px-3 py-1 rounded-xl font-medium ${item.answered ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600'}`}
-                                            >
-                                                {item.answered ? '응답 취소' : '응답 완료 체크'}
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))
-                            )}
-                        </div>
-                    </main>
-
-                    {/* 기도제목 작성 모달 (기도이름, 기간, 내용) */}
-                    {prayerModalOpen && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
-                            <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100">
-                                <h3 className="text-lg font-bold text-slate-800 mb-4">
-                                    {editPrayerId ? '기도제목 수정' : '새 기도제목 작성'} ({prayerCategory === 'church' ? '교회' : prayerCategory === 'team' ? '팀' : '개인'})
-                                </h3>
-
-                                <form onSubmit={handleSavePrayer} className="space-y-4">
-                                    <div>
-                                        <label className="block text-xs font-semibold text-slate-600 uppercase mb-1">기도 이름 (제목)</label>
-                                        <input 
-                                            type="text" 
-                                            value={prayerName}
-                                            onChange={(e) => setPrayerName(e.target.value)}
-                                            placeholder="예: 청년부 연합예배를 위하여"
-                                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-xs font-semibold text-slate-600 uppercase mb-1">기도 기간</label>
-                                        <input 
-                                            type="text" 
-                                            value={prayerPeriod}
-                                            onChange={(e) => setPrayerPeriod(e.target.value)}
-                                            placeholder="예: 2026년 3월 한 달간 / 매일 저녁"
-                                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-xs font-semibold text-slate-600 uppercase mb-1">기도제목 내용</label>
-                                        <textarea 
-                                            rows="4"
-                                            value={prayerContent}
-                                            onChange={(e) => setPrayerContent(e.target.value)}
-                                            placeholder="기도 내용을 상세히 적어주세요..."
-                                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                                        ></textarea>
-                                    </div>
-
-                                    <div className="flex space-x-2 pt-2">
-                                        <button 
-                                            type="button"
-                                            onClick={() => setPrayerModalOpen(false)}
-                                            className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm"
-                                        >
-                                            취소
-                                        </button>
-                                        <button 
-                                            type="submit"
-                                            className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-sm shadow-md"
-                                        >
-                                            저장하기
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            );
-        }
-
-        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-    </script>
-</body>
-</html>
+<body><div id="root"></div>
+<script type="text/babel">
+const cfg={apiKey:"AIzaSyCyvxYXSpQAraMukoiQBDgBjqEGYMUx38I",authDomain:"mock-invest-508310.firebaseapp.com",projectId:"mock-invest-508310",storageBucket:"mock-invest-508310.firebasestorage.app",messagingSenderId:"989438867458",appId:"1:989438867458:web:4015df8eebe9e91840cf1b",measurementId:"G-3GSJZGFRJE"};
+firebase.initializeApp(cfg);
+const auth=firebase.auth(), db=firebase.firestore(), stamp=()=>firebase.firestore.FieldValue.serverTimestamp();
+const ADMIN="egibynote105g@gmail.com";
+const {useState,useEffect,useMemo}=React;
+function fmt(d){if(!d)return "";return String(d).replaceAll("-",".");}
+function labelError(e){const c=e&&e.code||"";if(c.includes("permission-denied"))return "권한이 없습니다. 로그인 상태나 기도방 비밀번호를 확인해 주세요.";if(c.includes("network"))return "네트워크 연결을 확인해 주세요.";if(c.includes("popup-closed"))return "로그인 창이 닫혔습니다.";return e&&e.message||"잠시 후 다시 시도해 주세요.";}
+function App(){
+ const [user,setUser]=useState(undefined),[section,setSection]=useState("all"),[filter,setFilter]=useState("all");
+ const [church,setChurch]=useState([]),[personal,setPersonal]=useState([]),[rooms,setRooms]=useState([]),[members,setMembers]=useState({}),[teams,setTeams]=useState({});
+ const [modal,setModal]=useState(null),[draft,setDraft]=useState({}),[busy,setBusy]=useState(false),[toast,setToast]=useState("");
+ const [focus,setFocus]=useState(-1),[ownerMembers,setOwnerMembers]=useState({}),[showMemberRoom,setShowMemberRoom]=useState("");
+ const me=user&&user.uid,admin=user&&user.email===ADMIN&&user.emailVerified;
+ function flash(t){setToast(t);setTimeout(()=>setToast(""),3800);}
+ useEffect(()=>auth.onAuthStateChanged(u=>setUser(u||null)),[]);
+ useEffect(()=>{if(!me){setChurch([]);setPersonal([]);setRooms([]);return;}
+   const off1=db.collection("churchPrayers").onSnapshot(s=>setChurch(s.docs.map(d=>({id:d.id,...d.data(),kind:"church"}))),e=>flash(labelError(e)));
+   const off2=db.collection("users").doc(me).collection("prayers").onSnapshot(s=>setPersonal(s.docs.map(d=>({id:d.id,...d.data(),kind:"personal"}))),e=>flash(labelError(e)));
+   const off3=db.collection("rooms").where("archived","==",false).onSnapshot(s=>setRooms(s.docs.map(d=>({id:d.id,...d.data()}))),e=>flash(labelError(e)));
+   return()=>{off1();off2();off3();};
+ },[me]);
+ const roomKey=rooms.map(r=>r.id).sort().join("|");
+ useEffect(()=>{setMembers({});if(!me)return;const offs=rooms.filter(r=>r.ownerId!==me).map(r=>db.collection("rooms").doc(r.id).collection("members").doc(me).onSnapshot(d=>setMembers(m=>({...m,[r.id]:d.exists})),()=>{}));return()=>offs.forEach(fn=>fn());},[roomKey,me]);
+ const joined=useMemo(()=>rooms.filter(r=>r.ownerId===me||members[r.id]),[rooms,members,me]);
+ const joinedKey=joined.map(r=>r.id).sort().join("|");
+ useEffect(()=>{setTeams({});if(!me)return;const offs=joined.map(r=>db.collection("rooms").doc(r.id).collection("prayers").onSnapshot(s=>setTeams(prev=>({...prev,[r.id]:s.docs.map(d=>({id:d.id,...d.data(),kind:"team",roomId:r.id,roomName:r.name}))})),e=>flash(labelError(e))));return()=>offs.forEach(fn=>fn());},[joinedKey,me]);
+ useEffect(()=>{if(!showMemberRoom||!me)return;let r=rooms.find(x=>x.id===showMemberRoom);if(!r||r.ownerId!==me)return;const stop=db.collection("rooms").doc(r.id).collection("members").onSnapshot(s=>setOwnerMembers(p=>({...p,[r.id]:s.docs.map(d=>({id:d.id,...d.data()}))})),e=>flash(labelError(e)));return()=>stop();},[showMemberRoom,me,roomKey]);
+ const allTeam=Object.values(teams).flat();
+ const all=useMemo(()=>[...church,...allTeam,...personal].sort((a,b)=>(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0)),[church,teams,personal]);
+ const shown=(section==="church"?church:section==="team"?allTeam:section==="personal"?personal:all).filter(p=>section!=="all"||filter==="all"||p.kind===filter);
+ const roomName=id=>rooms.find(r=>r.id===id)?.name||"기도팀";
+ function openPrayer(kind,roomId,record){setDraft(record?{...record}:{kind:kind||"personal",roomId:roomId||joined[0]?.id||"",title:"",content:"",startDate:"",endDate:""});setModal("prayer");}
+ function openRoom(){setDraft({name:"",code:"",startDate:"",endDate:"",initialTitle:"",initialContent:""});setModal("room");}
+ function openJoin(r){setDraft({roomId:r.id,roomName:r.name,code:""});setModal("join");}
+ function focusNow(){if(!all.length){flash("기도제목을 먼저 등록해 주세요.");return;}setFocus(0);}
+ async function doLogin(){setBusy(true);try{const provider=new firebase.auth.GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});await auth.signInWithPopup(provider);}catch(e){if(["auth/popup-blocked","auth/operation-not-supported-in-this-environment"].includes(e.code)){try{await auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());}catch(e2){flash(labelError(e2));}}else flash(labelError(e));}finally{setBusy(false);}}
+ async function savePrayer(e){e.preventDefault();if(!draft.title?.trim()||!draft.content?.trim())return flash("기도명과 기도제목을 입력해 주세요.");if(draft.startDate&&draft.endDate&&draft.startDate>draft.endDate)return flash("종료일은 시작일 이후로 입력해 주세요.");if(draft.kind==="church"&&!admin)return flash("교회 기도제목은 관리자만 등록할 수 있습니다.");if(draft.kind==="team"&&!joined.some(r=>r.id===draft.roomId))return flash("기도팀을 선택해 주세요.");
+  const data={title:draft.title.trim().slice(0,100),content:draft.content.trim().slice(0,5000),startDate:draft.startDate||"",endDate:draft.endDate||"",updatedAt:stamp()};
+  const ref=draft.kind==="church"?db.collection("churchPrayers"):draft.kind==="personal"?db.collection("users").doc(me).collection("prayers"):db.collection("rooms").doc(draft.roomId).collection("prayers");
+  setBusy(true);try{if(draft.id){await ref.doc(draft.id).update(data);}else await ref.add({...data,createdAt:stamp(),createdBy:me});setModal(null);flash(draft.id?"기도제목을 수정했어요.":"기도제목을 등록했어요.");}catch(er){flash(labelError(er));}finally{setBusy(false);}
+ }
+ async function deletePrayer(p){if(!window.confirm("이 기도제목을 삭제할까요?"))return;const ref=p.kind==="church"?db.collection("churchPrayers").doc(p.id):p.kind==="personal"?db.collection("users").doc(me).collection("prayers").doc(p.id):db.collection("rooms").doc(p.roomId).collection("prayers").doc(p.id);try{await ref.delete();flash("기도제목을 삭제했어요.");}catch(er){flash(labelError(er));}}
+ async function createRoom(e){e.preventDefault();if(!draft.name?.trim()||draft.code?.trim().length<8)return flash("기도방 이름과 8자 이상 비밀번호가 필요합니다.");if(draft.startDate&&draft.endDate&&draft.startDate>draft.endDate)return flash("기간을 다시 확인해 주세요.");
+  setBusy(true);try{const room=db.collection("rooms").doc(),batch=db.batch();batch.set(room,{name:draft.name.trim().slice(0,80),ownerId:me,ownerName:user.displayName||"팀장",archived:false,startDate:draft.startDate||"",endDate:draft.endDate||"",createdAt:stamp()});batch.set(db.collection("roomCodes").doc(room.id),{code:draft.code.trim(),ownerId:me});await batch.commit();
+   if(draft.initialTitle?.trim()&&draft.initialContent?.trim())await room.collection("prayers").add({title:draft.initialTitle.trim(),content:draft.initialContent.trim(),startDate:draft.startDate||"",endDate:draft.endDate||"",createdAt:stamp(),updatedAt:stamp(),createdBy:me});
+   setModal(null);setSection("rooms");flash("기도방이 만들어졌어요. 비밀번호를 팀원에게 알려주세요.");}catch(er){flash(labelError(er));}finally{setBusy(false);}
+ }
+ async function joinRoom(e){e.preventDefault();setBusy(true);try{await db.collection("rooms").doc(draft.roomId).collection("members").doc(me).set({uid:me,displayName:user.displayName||user.email||"기도팀원",accessCode:draft.code,joinedAt:stamp()});setMembers(m=>({...m,[draft.roomId]:true}));setModal(null);flash("기도팀에 가입했어요!");}catch(er){flash(er.code==="permission-denied"?"기도방 비밀번호가 올바르지 않거나 가입할 수 없습니다.":labelError(er));}finally{setBusy(false);}}
+ async function leaveRoom(roomId){if(!window.confirm("이 기도팀에서 탈퇴할까요?"))return;try{await db.collection("rooms").doc(roomId).collection("members").doc(me).delete();setMembers(m=>({...m,[roomId]:false}));flash("기도팀에서 탈퇴했어요.");}catch(e){flash(labelError(e));}}
+ async function kick(roomId,uid){if(!window.confirm("이 팀원을 기도방에서 해지할까요?"))return;try{await db.collection("rooms").doc(roomId).collection("members").doc(uid).delete();flash("팀원 가입을 해지했어요.");}catch(e){flash(labelError(e));}}
+ async function closeRoom(room){const others=ownerMembers[room.id];if(!others){setShowMemberRoom(room.id);flash("먼저 팀원 관리를 열어 회원을 확인해 주세요.");return;}if(others.length){flash("기도방을 없애려면 먼저 모든 팀원을 해지해야 합니다.");return;}if(!window.confirm("이 기도방을 종료할까요? 등록한 팀 기도제목은 더 이상 표시되지 않습니다."))return;try{await db.collection("rooms").doc(room.id).update({archived:true,archivedAt:stamp()});flash("기도방을 종료했어요.");}catch(e){flash(labelError(e));}}
+ function Card({p}){const canEdit=p.kind!=="church"||admin;return <article className="prayer-card"><div className="card-top"><span className={"tag "+(p.kind==="team"?"team":p.kind==="personal"?"personal":"")}>{p.kind==="church"?"⛪ 교회 기도":p.kind==="team"?"🤝 팀 기도":"🌷 개인 기도"}</span><span className="date">{p.startDate?fmt(p.startDate):"상시"}{p.endDate?" ~ "+fmt(p.endDate):""}</span></div><h3>{p.title||"제목 없음"}</h3><p>{p.content||""}</p><div className="card-foot"><span className="room-name">{p.kind==="team"?p.roomName:p.kind==="church"?"우리 교회":"나만의 기도"}</span><div className="card-actions">{canEdit&&<><button className="tiny-btn" onClick={()=>openPrayer(p.kind,p.roomId,p)}>수정</button><button className="tiny-btn" onClick={()=>deletePrayer(p)}>삭제</button></>}</div></div></article>}
+ if(user===undefined)return <div className="loading"><div>🌿<p>기도의 숲을 준비하고 있어요…</p></div></div>;
+ if(!user)return <div className="signin"><div className="signin-card"><div className="brand"><span className="brand-mark">✳</span> 기도의 숲</div><div className="signin-garden">🌳</div><span className="eyebrow" style={{color:"#648b70"}}>A PLACE FOR PRAYER</span><h1>오늘도 함께 기도해요</h1><p>교회의 기도, 우리 팀의 기도, 나만의 기도까지.<br/>한 공간에 모아 마음을 잇는 기도의 숲입니다.</p><button className="primary" onClick={doLogin} disabled={busy}>{busy?"로그인 중…":"G  Google 계정으로 시작하기"}</button><div className="signin-foot">Google 로그인 후 실제 기도제목이 안전하게 저장됩니다.<br/>체험용 가상 데이터는 사용하지 않습니다.</div></div>{toast&&<div className="toast">{toast}</div>}</div>;
+ return <><header className="shell topbar"><div className="brand"><span className="brand-mark">✳</span> 기도의 숲</div><div className="top-actions"><div className="user-pill">{user.photoURL?<img className="avatar" src={user.photoURL} alt="프로필"/>:<div className="avatar">🌿</div>}<span>{user.displayName||user.email}{admin?" · 관리자":""}</span></div><button className="text-btn" onClick={()=>auth.signOut()}>로그아웃</button></div></header>
+ <div className="shell"><section className="hero"><div className="hero-content"><small>MY DAILY PRAYER GARDEN</small><h1>오늘도 기도의 씨앗을<br/>심어볼까요?</h1><p>작은 기도가 모여 큰 숲을 이룹니다.<br/>우리의 소중한 기도제목을 함께 품어요.</p><div className="hero-buttons"><button className="primary light" onClick={focusNow}>🙏 지금 기도하기 →</button><button className="primary" style={{background:"#ffffff25",boxShadow:"none",border:"1px solid #ffffff55"}} onClick={()=>openPrayer("personal")}>＋ 나의 기도 추가</button></div></div><div className="hero-art" aria-hidden="true"><svg viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg"><circle cx="294" cy="72" r="45" fill="#ffdb98"/><path d="M0 260Q70 185 130 245Q190 190 238 245Q320 182 420 235V300H0Z" fill="#39735b"/><path d="M0 278Q80 218 150 265Q244 200 325 260Q383 236 420 260V300H0Z" fill="#81a98b"/><rect x="299" y="120" width="14" height="172" rx="6" fill="#f0dcb5"/><ellipse cx="302" cy="119" rx="72" ry="82" fill="#b8d4a2"/><ellipse cx="344" cy="139" rx="58" ry="62" fill="#d3dea8"/><ellipse cx="263" cy="150" rx="51" ry="56" fill="#96be91"/><path d="M85 280q20-48 42 0M115 285q30-82 55 0" fill="none" stroke="#d7e6bd" strokeWidth="10" strokeLinecap="round"/><circle cx="93" cy="213" r="9" fill="#ffdd9c"/><circle cx="173" cy="235" r="6" fill="#ffdd9c"/></svg></div></section>
+ <div className="main-layout"><aside className="sidebar"><div className="side-title">PRAYER MENU</div>{[["all","🏡","나의 기도"],["church","⛪","교회 기도"],["team","🤝","팀 기도"],["personal","🌷","개인 기도"],["rooms","🌲","기도방"]].map(([id,ico,label])=><button key={id} className={"nav "+(section===id?"active":"")} onClick={()=>{setSection(id);setFilter("all");}}><span className="ico">{ico}</span>{label}</button>)}<div className="sideline"></div><div className="side-note"><strong>🌱 오늘의 작은 실천</strong>하나의 기도제목이라도 마음을 담아 기도해 보세요.</div></aside>
+ <main>{section!=="rooms"?<><div className="section-head"><div><h2>{section==="all"?"나의 기도 모아보기":section==="church"?"교회 기도제목":section==="team"?"기도팀과 함께": "개인 기도제목"}</h2><p>{section==="all"?"교회, 팀, 개인 기도를 한눈에 확인해요.":section==="church"?"교회가 함께 품는 기도제목입니다.":section==="team"?"내가 속한 모든 기도팀의 기도제목입니다.":"나만의 기도제목을 기록하고 돌아보세요."}</p></div><div className="section-buttons">{(section==="personal"||section==="all")&&<button className="outline" onClick={()=>openPrayer("personal")}>＋ 개인 기도</button>}{section==="church"&&admin&&<button className="primary" onClick={()=>openPrayer("church")}>＋ 교회 기도</button>}{section==="team"&&joined.length>0&&<button className="primary" onClick={()=>openPrayer("team")}>＋ 팀 기도</button>}</div></div>
+ {section==="all"&&<div className="stats"><div className="stat"><span className="mini">⛪</span><strong>{church.length}</strong><p>교회 기도제목</p></div><div className="stat"><span className="mini">🤝</span><strong>{allTeam.length}</strong><p>함께하는 팀 기도</p></div><div className="stat"><span className="mini">🌷</span><strong>{personal.length}</strong><p>나의 개인 기도</p></div></div>}
+ {section==="all"&&<div className="tabs">{[["all","전체 "+all.length],["church","교회"],["team","기도팀"],["personal","개인"]].map(([id,label])=><button key={id} className={"chip "+(filter===id?"active":"")} onClick={()=>setFilter(id)}>{label}</button>)}</div>}
+ {section==="team"&&<div className="tabs">{joined.length?joined.map(r=><button className="chip" key={r.id} onClick={()=>openPrayer("team",r.id)}>＋ {r.name} 기도 작성</button>):<button className="chip" onClick={()=>setSection("rooms")}>기도방 참가하기 →</button>}</div>}
+ <div className="cards">{shown.length?shown.map(p=><Card key={p.kind+":"+p.roomId+":"+p.id} p={p}/>):<div className="empty"><div className="plant">🌱</div><h3>아직 심어진 기도제목이 없어요</h3><p>{section==="church"&&!admin?"교회 관리자가 기도제목을 등록하면 이곳에 표시됩니다.":section==="team"?"기도방에 참가하거나 팀 기도를 등록해 보세요.":"첫 번째 기도제목을 작성해 보세요."}</p>{section==="team"?<button className="primary" onClick={()=>setSection("rooms")}>기도방 살펴보기</button>:(section==="all"||section==="personal")?<button className="primary" onClick={()=>openPrayer("personal")}>＋ 기도제목 등록</button>:admin?<button className="primary" onClick={()=>openPrayer("church")}>＋ 교회 기도 등록</button>:null}</div>}</div>
+ </>:<><div className="section-head"><div><h2>기도방</h2><p>함께 기도할 팀을 만들고, 비밀번호로 참가할 수 있어요.</p></div><button className="primary" onClick={openRoom}>＋ 기도방 만들기</button></div>{rooms.length===0?<div className="empty"><div className="plant">🌳</div><h3>첫 번째 기도방을 만들어 보세요</h3><p>기도방 이름과 기간, 비밀번호를 정하고 팀원들과 기도제목을 나눠요.</p><button className="primary" onClick={openRoom}>기도방 만들기</button></div>:<div className="room-cards">{rooms.map(r=>{const owner=r.ownerId===me,inside=owner||members[r.id];return <article className="room-card" key={r.id}><div className="room-icon">🌿</div><h3>{r.name}</h3><p>{r.startDate||r.endDate?"기도 기간 : "+(fmt(r.startDate)||"시작일 미정")+" ~ "+(fmt(r.endDate)||"종료일 미정"):"기간 제한 없는 기도방"}<br/>팀장 : {r.ownerName||"기도팀장"}</p><div className="room-row"><span className={"room-badge "+(inside?"":"lock")}>{owner?"👑 내가 만든 방":inside?"✓ 참가 중":"🔒 비밀번호 필요"}</span>{!inside?<button className="primary" onClick={()=>openJoin(r)}>기도방 참가하기</button>:<button className="outline" onClick={()=>{setSection("team");openPrayer("team",r.id);}}>＋ 팀 기도 작성</button>}{inside&&!owner&&<button className="tiny-btn" onClick={()=>leaveRoom(r.id)}>탈퇴</button>}{owner&&<button className="tiny-btn" onClick={()=>setShowMemberRoom(showMemberRoom===r.id?"":r.id)}>팀원 관리</button>}</div>{owner&&showMemberRoom===r.id&&<div className="members"><strong style={{fontSize:12}}>팀원 목록 ({(ownerMembers[r.id]||[]).length}명)</strong>{(ownerMembers[r.id]||[]).map(m=><div className="member" key={m.id}><span>{m.displayName||"팀원"}</span><button className="tiny-btn" onClick={()=>kick(r.id,m.id)}>가입 해지</button></div>)}{!(ownerMembers[r.id]||[]).length&&<p>가입한 팀원이 없습니다.</p>}<button className="outline danger" style={{marginTop:10,fontSize:12}} onClick={()=>closeRoom(r)}>기도방 종료</button></div>}</article>;})}</div>}<div className="notice">🔐 기도방 비밀번호는 8자 이상으로 설정해 주세요. 비밀번호를 아는 사람도 Google 로그인 후 참가해야 합니다.</div></>}
+ </main></div></div>
+ {modal&&<div className="modal-bg" onMouseDown={e=>{if(e.target===e.currentTarget&&!busy)setModal(null);}}><div className="modal"><div className="modal-head"><h2>{modal==="room"?"🌳 기도방 만들기":modal==="join"?"🔒 기도방 참가하기":draft.id?"✏️ 기도제목 수정":"🌱 기도제목 등록"}</h2><button className="x" onClick={()=>setModal(null)} aria-label="닫기">×</button></div>
+ {modal==="prayer"?<form onSubmit={savePrayer}><div className="field"><label>기도 종류</label><select value={draft.kind||"personal"} disabled={!!draft.id} onChange={e=>setDraft(d=>({...d,kind:e.target.value,roomId:joined[0]?.id||""}))}><option value="personal">🌷 개인 기도</option>{joined.length>0&&<option value="team">🤝 팀 기도</option>}{admin&&<option value="church">⛪ 교회 기도</option>}</select></div>{draft.kind==="team"&&<div className="field"><label>기도팀 선택</label><select value={draft.roomId||""} disabled={!!draft.id} required onChange={e=>setDraft(d=>({...d,roomId:e.target.value}))}>{joined.map(r=><option key={r.id} value={r.id}>{r.name}</option>)}</select></div>}
+ <div className="field"><label>기도명 *</label><input required maxLength="100" placeholder="예: 가정의 평안과 건강" value={draft.title||""} onChange={e=>setDraft(d=>({...d,title:e.target.value}))}/></div>
+ <div className="field-row"><div className="field"><label>시작일</label><input type="date" value={draft.startDate||""} onChange={e=>setDraft(d=>({...d,startDate:e.target.value}))}/></div><div className="field"><label>종료일</label><input type="date" value={draft.endDate||""} onChange={e=>setDraft(d=>({...d,endDate:e.target.value}))}/></div></div>
+ <div className="field"><label>기도제목 *</label><textarea required maxLength="5000" placeholder="기도할 내용을 편안하게 적어주세요." value={draft.content||""} onChange={e=>setDraft(d=>({...d,content:e.target.value}))}/></div><div className="modal-actions"><button type="button" className="outline" onClick={()=>setModal(null)}>취소</button><button className="primary" disabled={busy}>{busy?"저장 중…":"저장하기"}</button></div></form>
+ :modal==="room"?<form onSubmit={createRoom}><div className="field"><label>기도방 이름 *</label><input required maxLength="80" placeholder="예: 절대 믿음 40일 기도팀" value={draft.name||""} onChange={e=>setDraft(d=>({...d,name:e.target.value}))}/></div><div className="field-row"><div className="field"><label>기도 시작일</label><input type="date" value={draft.startDate||""} onChange={e=>setDraft(d=>({...d,startDate:e.target.value}))}/></div><div className="field"><label>기도 종료일</label><input type="date" value={draft.endDate||""} onChange={e=>setDraft(d=>({...d,endDate:e.target.value}))}/></div></div><div className="field"><label>참가 비밀번호 * (8자 이상)</label><input required minLength="8" maxLength="64" autoComplete="off" type="password" placeholder="팀원에게 전달할 비밀번호" value={draft.code||""} onChange={e=>setDraft(d=>({...d,code:e.target.value}))}/><span className="form-help">참가 비밀번호는 기도방 공개 목록에 표시되지 않습니다.</span></div><div className="field"><label>첫 번째 기도명 (선택)</label><input maxLength="100" placeholder="예: 우리 팀의 기도제목" value={draft.initialTitle||""} onChange={e=>setDraft(d=>({...d,initialTitle:e.target.value}))}/></div><div className="field"><label>첫 번째 기도제목 (선택)</label><textarea placeholder="첫 기도제목을 함께 등록할 수 있어요." value={draft.initialContent||""} onChange={e=>setDraft(d=>({...d,initialContent:e.target.value}))}/></div><div className="modal-actions"><button className="outline" type="button" onClick={()=>setModal(null)}>취소</button><button className="primary" disabled={busy}>{busy?"만드는 중…":"기도방 만들기"}</button></div></form>
+ :<form onSubmit={joinRoom}><p style={{fontSize:14,color:"#687b6d",lineHeight:1.8}}><strong>{draft.roomName}</strong>에 참가하시려면 팀장이 알려준 비밀번호를 입력하세요.</p><div className="field"><label>기도방 비밀번호</label><input required type="password" autoComplete="off" placeholder="참가 비밀번호 입력" value={draft.code||""} onChange={e=>setDraft(d=>({...d,code:e.target.value}))}/></div><div className="modal-actions"><button type="button" className="outline" onClick={()=>setModal(null)}>취소</button><button className="primary" disabled={busy}>{busy?"확인 중…":"기도방 참가하기"}</button></div></form>}</div></div>}
+ {focus>=0&&all.length>0&&<div className="focus-screen"><div className="focus-head"><strong>🌿 기도의 시간</strong><button className="primary light" onClick={()=>setFocus(-1)}>✕ 마치기</button></div><div className="focus-center"><div className="circle">🙏</div><span className="counter">{focus+1} / {all.length}</span><h2>{all[Math.min(focus,all.length-1)].title}</h2><span className="tag">{all[Math.min(focus,all.length-1)].kind==="church"?"교회 기도":all[Math.min(focus,all.length-1)].kind==="team"?"팀 기도":"개인 기도"}</span><p>{all[Math.min(focus,all.length-1)].content}</p><div className="focus-controls"><button className="outline" disabled={focus===0} onClick={()=>setFocus(i=>Math.max(0,i-1))}>← 이전 제목</button><button className="primary light" disabled={focus>=all.length-1} onClick={()=>setFocus(i=>Math.min(all.length-1,i+1))}>다음 제목 →</button></div></div><div className="focus-bottom">잠시 멈추어 기도의 내용에 마음을 모아보세요.</div></div>}
+ {toast&&<div className="toast" role="status">{toast}</div>}</>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body></html>
