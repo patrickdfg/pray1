@@ -23,6 +23,18 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script>
+window.__prayInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', function(event) {
+  event.preventDefault();
+  window.__prayInstallPrompt = event;
+  window.dispatchEvent(new Event('pray-install-ready'));
+});
+window.addEventListener('appinstalled', function() {
+  window.__prayInstallPrompt = null;
+  window.dispatchEvent(new Event('pray-app-installed'));
+});
+</script>
 <style>
 :root{color-scheme:light;--forest:#174d40;--deep:#103c33;--mint:#e7f1e9;--cream:#fbf9f2;--ink:#263932;--muted:#74817a;--line:#e8eae3;--sun:#ffdf9c;--radius:24px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f8f8f2;color:var(--ink);font-family:"DM Sans","Noto Sans KR",sans-serif;-webkit-font-smoothing:antialiased}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.53;cursor:not-allowed}a{color:inherit;text-decoration:none}
@@ -209,6 +221,13 @@ body:before{content:"";pointer-events:none;position:fixed;inset:0;z-index:0;opac
 }
 @media(max-width:360px){.compact-home-hero{min-height:208px}.compact-home-hero h1{font-size:23px;max-width:225px}}
 
+
+/* The install button only appears in browser mode, never in the installed app. */
+.app-install-btn{border:1px solid #f2d28d;border-radius:13px;background:#ffe9aa;color:#54406c;cursor:pointer;font:800 12px "Noto Sans KR",sans-serif;padding:10px 14px;white-space:nowrap;box-shadow:0 4px 12px #08123d22}
+.app-install-btn:hover{background:#fff1c6}
+.signin .app-install-btn{margin-top:12px;background:#f4eaff;border-color:#ded2fb;color:#6b55aa;box-shadow:none}
+@media(max-width:640px){.top-actions .app-install-btn{font-size:10px;padding:8px 9px;border-radius:11px}.signin .app-install-btn{width:100%}}
+
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 </head>
@@ -259,12 +278,31 @@ function App(){
  const [church,setChurch]=useState([]),[personal,setPersonal]=useState([]),[rooms,setRooms]=useState([]),[members,setMembers]=useState({}),[teams,setTeams]=useState({});
  const [modal,setModal]=useState(null),[draft,setDraft]=useState({}),[busy,setBusy]=useState(false),[toast,setToast]=useState("");
  const [showAllHome,setShowAllHome]=useState(false);
+ const [installPrompt,setInstallPrompt]=useState(()=>window.__prayInstallPrompt||null);
+ const [appInstalled,setAppInstalled]=useState(()=>window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone===true);
  const [focus,setFocus]=useState(-1),[ownerMembers,setOwnerMembers]=useState({}),[showMemberRoom,setShowMemberRoom]=useState("");
  const [today,setToday]=useState(koreaToday()),[month,setMonth]=useState(koreaToday().slice(0,7)),[selectedDay,setSelectedDay]=useState(koreaToday());
  const [todayChecks,setTodayChecks]=useState([]),[monthChecks,setMonthChecks]=useState([]),[monthLoading,setMonthLoading]=useState(true),[pendingCheck,setPendingCheck]=useState("");
  const me=user&&user.uid,admin=user&&user.email===ADMIN&&user.emailVerified;
  function flash(t){setToast(t);setTimeout(()=>setToast(""),3800);}
  useEffect(()=>auth.onAuthStateChanged(u=>setUser(u||null)),[]);
+ useEffect(()=>{
+   const ready=()=>setInstallPrompt(window.__prayInstallPrompt||null);
+   const installed=()=>{setAppInstalled(true);setInstallPrompt(null);};
+   window.addEventListener("pray-install-ready",ready);
+   window.addEventListener("pray-app-installed",installed);
+   return()=>{window.removeEventListener("pray-install-ready",ready);window.removeEventListener("pray-app-installed",installed);};
+ },[]);
+ async function installApp(){
+   const request=window.__prayInstallPrompt||installPrompt;
+   if(!request){flash("앱 설치가 아직 표시되지 않습니다. 크롬에서 30초 정도 이용한 뒤 다시 눌러주세요.");return;}
+   try{
+     await request.prompt();
+     const choice=await request.userChoice;
+     if(choice?.outcome==="accepted")flash("앱 설치를 진행합니다. 홈 화면에서 기도의 숲 아이콘을 열어주세요.");
+   }catch(error){flash(labelError(error));}
+   window.__prayInstallPrompt=null;setInstallPrompt(null);
+ }
  useEffect(()=>{const timer=setInterval(()=>setToday(koreaToday()),60000);return()=>clearInterval(timer);},[]);
  useEffect(()=>{if(!me){setTodayChecks([]);return;}const stop=db.collection("users").doc(me).collection("prayerChecks").where("day","==",today).onSnapshot(s=>setTodayChecks(s.docs.map(d=>({id:d.id,...d.data()}))),e=>flash(labelError(e)));return()=>stop();},[me,today]);
  useEffect(()=>{setMonthLoading(true);setMonthChecks([]);if(!me){setMonthLoading(false);return;}const stop=db.collection("users").doc(me).collection("prayerChecks").where("day",">=",month+"-01").where("day","<=",month+"-31").onSnapshot(s=>{setMonthChecks(s.docs.map(d=>({id:d.id,...d.data()})));setMonthLoading(false);},e=>{setMonthLoading(false);flash(labelError(e));});return()=>stop();},[me,month]);
@@ -314,8 +352,8 @@ function App(){
  <div className="prayer-body"><div className="card-top"><span className={"tag "+(p.kind==="team"?"team":p.kind==="personal"?"personal":"")}>{p.kind==="church"?"교회 기도":p.kind==="team"?"팀 기도":"개인 기도"}</span><span className="date">{p.startDate?fmt(p.startDate):"상시"}{p.endDate?" ~ "+fmt(p.endDate):""}</span></div>
  <h3>{p.title||"제목 없음"}</h3><p>{p.content||""}</p><div className="card-foot"><span className="room-name">{p.kind==="team"?p.roomName:p.kind==="church"?"우리 교회":"나만의 기도"}</span><div className="card-actions"><button className={"tiny-btn check-button "+(isChecked(p,today)?"checked":"")} onClick={()=>togglePrayer(p,today)} disabled={pendingCheck===checkId(p,today)}>{isChecked(p,today)?"✓ 기도했어요":"🙏 기도했어요"}</button>{canEdit&&<><button className="tiny-btn" onClick={()=>openPrayer(p.kind,p.roomId,p)}>수정</button><button className="tiny-btn" onClick={()=>deletePrayer(p)}>삭제</button></>}</div></div></div></article>}
  if(user===undefined)return <div className="loading"><div>🌿<p>기도의 숲을 준비하고 있어요…</p></div></div>;
- if(!user)return <div className="signin"><div className="signin-card"><div className="brand"><span className="brand-mark">✦</span> 기도의 숲</div><div className="signin-garden">🌙</div><span className="eyebrow" style={{color:"#648b70"}}>A PLACE FOR PRAYER</span><h1>오늘도 함께 기도해요</h1><p>교회의 기도, 우리 팀의 기도, 나만의 기도까지.<br/>한 공간에 모아 마음을 잇는 기도의 숲입니다.</p><button className="primary" onClick={doLogin} disabled={busy}>{busy?"로그인 중…":"G  Google 계정으로 시작하기"}</button><div className="signin-foot">Google 로그인 후 실제 기도제목이 안전하게 저장됩니다.<br/>체험용 가상 데이터는 사용하지 않습니다.</div></div>{toast&&<div className="toast">{toast}</div>}</div>;
- return <><header className="shell topbar"><div className="brand"><span className="brand-mark">✦</span> 기도의 숲</div><div className="top-actions"><div className="user-pill">{user.photoURL?<img className="avatar" src={user.photoURL} alt="프로필"/>:<div className="avatar">🌿</div>}<span>{user.displayName||user.email}{admin?" · 관리자":""}</span></div><button className="text-btn" onClick={()=>auth.signOut()}>로그아웃</button></div></header>
+ if(!user)return <div className="signin"><div className="signin-card"><div className="brand"><span className="brand-mark">✦</span> 기도의 숲</div><div className="signin-garden">🌙</div><span className="eyebrow" style={{color:"#648b70"}}>A PLACE FOR PRAYER</span><h1>오늘도 함께 기도해요</h1><p>교회의 기도, 우리 팀의 기도, 나만의 기도까지.<br/>한 공간에 모아 마음을 잇는 기도의 숲입니다.</p><button className="primary" onClick={doLogin} disabled={busy}>{busy?"로그인 중…":"G  Google 계정으로 시작하기"}</button><div className="signin-foot">Google 로그인 후 실제 기도제목이 안전하게 저장됩니다.<br/>체험용 가상 데이터는 사용하지 않습니다.</div>{!appInstalled&&<button className="app-install-btn" onClick={installApp}>📲 기도의 숲 앱 설치</button>}</div>{toast&&<div className="toast">{toast}</div>}</div>;
+ return <><header className="shell topbar"><div className="brand"><span className="brand-mark">✦</span> 기도의 숲</div><div className="top-actions"><div className="user-pill">{user.photoURL?<img className="avatar" src={user.photoURL} alt="프로필"/>:<div className="avatar">🌿</div>}<span>{user.displayName||user.email}{admin?" · 관리자":""}</span></div>{!appInstalled&&<button className="app-install-btn" onClick={installApp}>📲 앱 설치</button>}<button className="text-btn" onClick={()=>auth.signOut()}>로그아웃</button></div></header>
  <div className="shell">{section==="all"&&<section className="hero compact-home-hero"><div className="hero-content"><small>✦ MOONLIGHT PRAYER GARDEN</small><h1>오늘도, 기도가<br/>작은 빛이 되는 밤 🌙</h1><p>고요한 마음으로 함께 기도해요.<br/>작은 기도들이 모여 아름다운 숲을 이룹니다.</p><div className="hero-buttons"><button className="primary light" onClick={focusNow}>✨ 지금 기도하기 →</button><button className="primary" style={{background:"#ffffff25",boxShadow:"none",border:"1px solid #ffffff65"}} onClick={()=>openPrayer("team")}>＋ 팀 기도 추가</button></div></div>
  <div className="hero-art" aria-hidden="true"><svg viewBox="0 0 600 340" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -371,5 +409,14 @@ function App(){
  {toast&&<div className="toast" role="status">{toast}</div>}</>;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./sw.js', { scope:'./' }).catch(function(error) {
+      console.warn('Prayer Forest service worker registration failed:', error);
+    });
+  });
+}
 </script>
 </body></html>
