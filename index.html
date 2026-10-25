@@ -367,6 +367,27 @@ html,body,#root{max-width:100%;overflow-x:clip}
   }
   .main-layout>.sidebar>.nav .ico{display:block;flex:0 0 auto;line-height:1}
 }
+/* Team prayer rooms remain visible even before their first prayer is added. */
+.team-room-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin:0 0 18px}
+.team-room-tile{min-width:0;display:flex;flex-direction:column;gap:10px;padding:17px 18px;border:1px solid #e6e2f3;border-radius:20px;background:#fff;box-shadow:0 7px 18px #11143d14}
+.team-room-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.team-room-name{min-width:0;margin:0;color:#38375e;font-size:16px;line-height:1.45;font-weight:850;overflow-wrap:anywhere}
+.team-room-pill{flex:0 0 auto;border-radius:999px;padding:5px 9px;background:#f0edff;color:#6b60b7;font-size:11px;font-weight:800}
+.team-room-hint{margin:0;color:#8489a4;font-size:12px;line-height:1.6}
+.team-room-tile .outline{align-self:flex-start;font-size:12px;padding:9px 13px}
+/* Pray for today directly from the collapsed card: outline heart -> filled heart. */
+.compact-pray-btn{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;min-width:38px;border:1px solid #f0dbe6;border-radius:13px;background:#fff6fa;color:#be7195;font-size:27px;line-height:1;cursor:pointer;transition:background .16s,color .16s,transform .16s}
+.compact-pray-btn:hover:not(:disabled){transform:scale(1.05)}
+.compact-pray-btn.prayed{background:#ffe4ee;color:#d85a91;border-color:#f1aeca}
+.compact-pray-btn:disabled{opacity:.6;cursor:wait}
+.prayer-card.compact-card.prayed-today:not(.answered),.home-main .preview-cards .prayer-card.compact-card.prayed-today:not(.answered){border-color:#ecc3da;background:linear-gradient(110deg,#fff9fc,#fff0f7)}
+@media(max-width:640px){
+ .team-room-overview{grid-template-columns:1fr;gap:9px;margin-bottom:14px}
+ .team-room-tile{padding:13px 14px;border-radius:16px}
+ .team-room-name{font-size:14px}
+ .compact-topline{gap:5px}
+ .compact-pray-btn{flex-basis:33px;width:33px;min-width:33px;height:33px;border-radius:11px;font-size:23px}
+}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 </head>
@@ -461,7 +482,7 @@ function App(){
  },[me]);
  const roomKey=rooms.map(r=>r.id).sort().join("|");
  useEffect(()=>{setMembers({});if(!me)return;const offs=rooms.filter(r=>r.ownerId!==me).map(r=>db.collection("rooms").doc(r.id).collection("members").doc(me).onSnapshot(d=>setMembers(m=>({...m,[r.id]:d.exists})),()=>{}));return()=>offs.forEach(fn=>fn());},[roomKey,me]);
- const joined=useMemo(()=>rooms.filter(r=>r.ownerId===me||members[r.id]),[rooms,members,me]);
+ const joined=useMemo(()=>rooms.filter(r=>r.ownerId===me||members[r.id]||admin),[rooms,members,me,admin]);
  const joinedKey=joined.map(r=>r.id).sort().join("|");
  useEffect(()=>{setTeams({});if(!me)return;const offs=joined.map(r=>db.collection("rooms").doc(r.id).collection("prayers").onSnapshot(s=>setTeams(prev=>({...prev,[r.id]:s.docs.map(d=>({id:d.id,...d.data(),kind:"team",roomId:r.id,roomName:r.name}))})),e=>flash(labelError(e))));return()=>offs.forEach(fn=>fn());},[joinedKey,me]);
  useEffect(()=>{if(!showMemberRoom||!me)return;let r=rooms.find(x=>x.id===showMemberRoom);if(!r||r.ownerId!==me)return;const stop=db.collection("rooms").doc(r.id).collection("members").onSnapshot(s=>setOwnerMembers(p=>({...p,[r.id]:s.docs.map(d=>({id:d.id,...d.data()}))})),e=>flash(labelError(e)));return()=>stop();},[showMemberRoom,me,roomKey]);
@@ -520,10 +541,12 @@ function App(){
  async function closeRoom(room){const others=ownerMembers[room.id];if(!others){setShowMemberRoom(room.id);flash("먼저 팀원 관리를 열어 회원을 확인해 주세요.");return;}if(others.length){flash("기도방을 없애려면 먼저 모든 팀원을 해지해야 합니다.");return;}if(!window.confirm("이 기도방을 종료할까요? 등록한 팀 기도제목은 더 이상 표시되지 않습니다."))return;try{await db.collection("rooms").doc(room.id).update({archived:true,archivedAt:stamp()});flash("기도방을 종료했어요.");}catch(e){flash(labelError(e));}}
  function Card({p}){
    const id=prayerKey(p),expanded=!!expandedCards[id],answered=isAnswered(p);
-   const canEdit=!p.archivedOriginal&&(p.kind!=="church"||admin);
+   const teamOwner=p.kind==="team"&&rooms.some(r=>r.id===p.roomId&&r.ownerId===me);
+    const canEdit=!p.archivedOriginal&&(p.kind==="church"?!!admin:p.kind==="team"?(!!admin||teamOwner||p.createdBy===me):true);
+    const prayedToday=!answered&&isChecked(p,today);
    const kindLabel=p.kind==="church"?"교회 기도":p.kind==="team"?"팀 기도":"개인 기도";
    const kindIcon=p.kind==="church"?"⛪":p.kind==="team"?"🤝":"🌷";
-   return <article className={"prayer-card compact-card "+(expanded?"expanded ":"")+(answered?"answered":"")}>
+   return <article className={"prayer-card compact-card "+(expanded?"expanded ":"")+(answered?"answered":"")+(prayedToday?"prayed-today":"")}>
      <span className={"prayer-kind-icon "+p.kind} role="img" aria-label={kindLabel} title={kindLabel}>{kindIcon}</span>
      <div className="prayer-body">
        <div className="compact-topline">
@@ -532,6 +555,7 @@ function App(){
            {!expanded&&<p className="compact-preview">{answered?"✨ 기도응답 완료 · ":""}{p.content||""}</p>}
          </div>
          <button type="button" className="compact-view-btn" aria-expanded={expanded} onClick={()=>setExpandedCards(x=>({...x,[id]:!x[id]}))}>{expanded?"접기 ▲":"보기 ›"}</button>
+          {!answered&&!p.archivedOriginal&&<button type="button" className={"compact-pray-btn "+(prayedToday?"prayed":"")} aria-label={prayedToday?"오늘 기도 체크 취소":"오늘 기도했어요 체크"} aria-pressed={prayedToday} title={prayedToday?"오늘 기도 체크 취소":"오늘 기도했어요"} disabled={pendingCheck===checkId(p,today)} onClick={()=>togglePrayer(p,today)}>{prayedToday?"♥":"♡"}</button>}
        </div>
        {expanded&&<div className="prayer-details">
          {answered&&<div className="answered-label">✨ 기도응답 완료</div>}
@@ -591,7 +615,7 @@ function App(){
    </div>
  </div>}
  {section==="all"&&showAllHome&&<div className="tabs">{[["all","전체 "+(statusFilter==="answered"?sectionAnswered.length:sectionActive.length)],["church","교회"],["team","기도팀"],["personal","개인"]].map(([id,label])=><button key={id} className={"chip "+(filter===id?"active":"")} onClick={()=>setFilter(id)}>{label}</button>)}</div>}
- {section==="team"&&<div className="tabs">{joined.length?joined.map(r=><button className="chip" key={r.id} onClick={()=>openPrayer("team",r.id)}>＋ {r.name} 기도 작성</button>):<button className="chip" onClick={()=>setSection("rooms")}>기도방 참가하기 →</button>}</div>}
+ {section==="team"&&<div className="team-room-overview">{joined.length?joined.map(r=>{const items=teams[r.id]||[],loaded=!!teams[r.id],active=items.filter(p=>!isAnswered(p)).length;return <section className="team-room-tile" key={r.id}><div className="team-room-heading"><h3 className="team-room-name">🌳 {r.name}</h3><span className="team-room-pill">{r.ownerId===me?"내가 만든 방":admin?"관리자":"참가 중"}</span></div><p className="team-room-hint">{!loaded?"기도제목 확인 중…":!items.length?"아직 등록된 기도제목이 없습니다.":"진행 중 "+active+"개 · 응답 "+(items.length-active)+"개"}</p><button className="outline" onClick={()=>openPrayer("team",r.id)}>{items.length?"＋ 기도제목 작성":"＋ 첫 기도제목 작성"}</button></section>}):<div className="team-room-tile"><h3 className="team-room-name">🌳 아직 참여 중인 기도방이 없어요</h3><p className="team-room-hint">기도방을 만들거나 참가하면 여기에 바로 나타납니다.</p><button className="outline" onClick={()=>setSection("rooms")}>기도방 살펴보기 →</button></div>}</div>}
  <div className="prayer-status-bar">
    <span>전체 <b>{fromSection.length}</b><i>·</i> 진행 중 <b>{sectionActive.length}</b><i>·</i> 응답 <b>{sectionAnswered.length}</b></span>
    {section==="all"&&(shown.length>5||showAllHome)&&<button className="prayer-more-btn" onClick={()=>{setShowAllHome(v=>!v);setFilter("all");}}>{showAllHome?"간단히 보기 ▲":"전체 보기 ›"}</button>}
@@ -600,8 +624,8 @@ function App(){
    <button className={statusFilter==="active"?"selected":""} onClick={()=>{setStatusFilter("active");setExpandedCards({});}}>진행 중</button>
    <button className={statusFilter==="answered"?"selected":""} onClick={()=>{setStatusFilter("answered");setExpandedCards({});}}>✨ 기도응답 {sectionAnswered.length}</button>
  </div>
- <div className={"cards "+(section==="all"&&!showAllHome?"preview-cards":"")}>{shown.length?(section==="all"&&!showAllHome?shown.slice(0,5):shown).map(p=><Card key={prayerKey(p)} p={p}/>):statusFilter==="answered"?<div className="empty answered-empty"><div className="plant">✨</div><h3>아직 기도응답 기록이 없어요</h3><p>기도에 응답을 받으면 이곳에 차곡차곡 모입니다.</p></div>:<div className="empty"><div className="plant">🌱</div><h3>진행 중인 기도제목이 없어요</h3><p>{section==="church"&&!admin?"교회 관리자가 기도제목을 등록하면 이곳에 표시됩니다.":section==="team"?"기도방에 참가하거나 팀 기도를 등록해 보세요.":"기도제목을 등록하면 이곳에 표시됩니다."}</p>{section==="team"?<button className="primary" onClick={()=>setSection("rooms")}>기도방 살펴보기</button>:(section==="all"||section==="personal")?<button className="primary" onClick={()=>openPrayer(section==="all"?"team":"personal")}>＋ {section==="all"?"팀 기도":"개인 기도"} 등록</button>:admin?<button className="primary" onClick={()=>openPrayer("church")}>＋ 교회 기도 등록</button>:null}</div>}</div>
- </>:<><div className="section-head"><div><h2>기도방</h2><p>함께 기도할 팀을 만들고, 비밀번호로 참가할 수 있어요.</p></div><button className="primary" onClick={openRoom}>＋ 기도방 만들기</button></div>{rooms.length===0?<div className="empty"><div className="plant">🌳</div><h3>첫 번째 기도방을 만들어 보세요</h3><p>기도방 이름과 기간, 비밀번호를 정하고 팀원들과 기도제목을 나눠요.</p><button className="primary" onClick={openRoom}>기도방 만들기</button></div>:<div className="room-cards">{rooms.map(r=>{const owner=r.ownerId===me,inside=owner||members[r.id];return <article className="room-card" key={r.id}><div className="room-icon">🌿</div><h3>{r.name}</h3><p>{r.startDate||r.endDate?"기도 기간 : "+(fmt(r.startDate)||"시작일 미정")+" ~ "+(fmt(r.endDate)||"종료일 미정"):"기간 제한 없는 기도방"}<br/>팀장 : {r.ownerName||"기도팀장"}</p><div className="room-row"><span className={"room-badge "+(inside?"":"lock")}>{owner?"👑 내가 만든 방":inside?"✓ 참가 중":"🔒 비밀번호 필요"}</span>{!inside?<button className="primary" onClick={()=>openJoin(r)}>기도방 참가하기</button>:<button className="outline" onClick={()=>{setSection("team");openPrayer("team",r.id);}}>＋ 팀 기도 작성</button>}{inside&&!owner&&<button className="tiny-btn" onClick={()=>leaveRoom(r.id)}>탈퇴</button>}{owner&&<button className="tiny-btn" onClick={()=>setShowMemberRoom(showMemberRoom===r.id?"":r.id)}>팀원 관리</button>}</div>{owner&&showMemberRoom===r.id&&<div className="members"><strong style={{fontSize:12}}>팀원 목록 ({(ownerMembers[r.id]||[]).length}명)</strong>{(ownerMembers[r.id]||[]).map(m=><div className="member" key={m.id}><span>{m.displayName||"팀원"}</span><button className="tiny-btn" onClick={()=>kick(r.id,m.id)}>가입 해지</button></div>)}{!(ownerMembers[r.id]||[]).length&&<p>가입한 팀원이 없습니다.</p>}<button className="outline danger" style={{marginTop:10,fontSize:12}} onClick={()=>closeRoom(r)}>기도방 종료</button></div>}</article>;})}</div>}</>}
+ <div className={"cards "+(section==="all"&&!showAllHome?"preview-cards":"")}>{shown.length?(section==="all"&&!showAllHome?shown.slice(0,5):shown).map(p=><Card key={prayerKey(p)} p={p}/>):statusFilter==="answered"?<div className="empty answered-empty"><div className="plant">✨</div><h3>아직 기도응답 기록이 없어요</h3><p>기도에 응답을 받으면 이곳에 차곡차곡 모입니다.</p></div>:<div className="empty"><div className="plant">🌱</div><h3>진행 중인 기도제목이 없어요</h3><p>{section==="church"&&!admin?"교회 관리자가 기도제목을 등록하면 이곳에 표시됩니다.":section==="team"?(joined.length?"위 기도방에서 첫 기도제목을 작성해 보세요.":"기도방에 참가하거나 팀 기도를 등록해 보세요."):"기도제목을 등록하면 이곳에 표시됩니다."}</p>{section==="team"?<button className="primary" onClick={()=>setSection("rooms")}>기도방 살펴보기</button>:(section==="all"||section==="personal")?<button className="primary" onClick={()=>openPrayer(section==="all"?"team":"personal")}>＋ {section==="all"?"팀 기도":"개인 기도"} 등록</button>:admin?<button className="primary" onClick={()=>openPrayer("church")}>＋ 교회 기도 등록</button>:null}</div>}</div>
+ </>:<><div className="section-head"><div><h2>기도방</h2><p>함께 기도할 팀을 만들고, 비밀번호로 참가할 수 있어요.</p></div><button className="primary" onClick={openRoom}>＋ 기도방 만들기</button></div>{rooms.length===0?<div className="empty"><div className="plant">🌳</div><h3>첫 번째 기도방을 만들어 보세요</h3><p>기도방 이름과 기간, 비밀번호를 정하고 팀원들과 기도제목을 나눠요.</p><button className="primary" onClick={openRoom}>기도방 만들기</button></div>:<div className="room-cards">{rooms.map(r=>{const owner=r.ownerId===me,inside=owner||members[r.id]||admin;return <article className="room-card" key={r.id}><div className="room-icon">🌿</div><h3>{r.name}</h3><p>{r.startDate||r.endDate?"기도 기간 : "+(fmt(r.startDate)||"시작일 미정")+" ~ "+(fmt(r.endDate)||"종료일 미정"):"기간 제한 없는 기도방"}<br/>팀장 : {r.ownerName||"기도팀장"}</p><div className="room-row"><span className={"room-badge "+(inside?"":"lock")}>{owner?"👑 내가 만든 방":admin?"👑 관리자":inside?"✓ 참가 중":"🔒 비밀번호 필요"}</span>{!inside?<button className="primary" onClick={()=>openJoin(r)}>기도방 참가하기</button>:<button className="outline" onClick={()=>{setSection("team");openPrayer("team",r.id);}}>＋ 팀 기도 작성</button>}{inside&&!owner&&<button className="tiny-btn" onClick={()=>leaveRoom(r.id)}>탈퇴</button>}{owner&&<button className="tiny-btn" onClick={()=>setShowMemberRoom(showMemberRoom===r.id?"":r.id)}>팀원 관리</button>}</div>{owner&&showMemberRoom===r.id&&<div className="members"><strong style={{fontSize:12}}>팀원 목록 ({(ownerMembers[r.id]||[]).length}명)</strong>{(ownerMembers[r.id]||[]).map(m=><div className="member" key={m.id}><span>{m.displayName||"팀원"}</span><button className="tiny-btn" onClick={()=>kick(r.id,m.id)}>가입 해지</button></div>)}{!(ownerMembers[r.id]||[]).length&&<p>가입한 팀원이 없습니다.</p>}<button className="outline danger" style={{marginTop:10,fontSize:12}} onClick={()=>closeRoom(r)}>기도방 종료</button></div>}</article>;})}</div>}</>}
  </main></div></div>
  {modal&&<div className="modal-bg" onMouseDown={e=>{if(e.target===e.currentTarget&&!busy)setModal(null);}}><div className="modal"><div className="modal-head"><h2>{modal==="room"?"🌳 기도방 만들기":modal==="join"?"🔒 기도방 참가하기":draft.id?"✏️ 기도제목 수정":draft.kind==="team"?"🤝 팀 기도제목 등록":draft.kind==="church"?"⛪ 교회 기도제목 등록":"🌷 개인 기도 등록"}</h2><button className="x" onClick={()=>setModal(null)} aria-label="닫기">×</button></div>
  {modal==="prayer"?<form onSubmit={savePrayer}><div className="field"><label>기도 종류</label><select value={draft.kind||"team"} disabled={!!draft.id} onChange={e=>setDraft(d=>({...d,kind:e.target.value,roomId:joined[0]?.id||""}))}>{joined.length>0&&<option value="team">🤝 팀 기도</option>}<option value="personal">🌷 개인 기도</option>{admin&&<option value="church">⛪ 교회 기도</option>}</select></div>{draft.kind==="team"&&<div className="field"><label>기도팀 선택</label><select value={draft.roomId||""} disabled={!!draft.id} required onChange={e=>setDraft(d=>({...d,roomId:e.target.value}))}>{joined.map(r=><option key={r.id} value={r.id}>{r.name}</option>)}</select></div>}
