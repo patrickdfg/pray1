@@ -389,59 +389,86 @@ html,body,#root{max-width:100%;overflow-x:clip}
  .compact-pray-btn{flex-basis:33px;width:33px;min-width:33px;height:33px;border-radius:11px;font-size:23px}
 }
 
-/* Prayer time: one swipeable page per category, with every title in a vertical reading list. */
-.focus-screen{height:100vh;height:100dvh;min-height:0;padding:calc(13px + env(safe-area-inset-top,0px)) 14px calc(9px + env(safe-area-inset-bottom,0px));gap:11px;overflow:hidden}
-.focus-head{flex:0 0 auto;max-width:840px;min-height:34px;gap:14px}
-.focus-brand{display:flex;align-items:center;gap:8px;font-size:17px;letter-spacing:-.3px}
-.focus-brand>span{font-size:19px}
-.focus-close{flex:0 0 auto;border:1px solid #ffffff65;background:#ffffff1e;color:#fff;border-radius:12px;padding:6px 10px;font-size:12px;font-weight:700;line-height:1.4;cursor:pointer}
-.focus-close:focus-visible,.focus-tab:focus-visible,.focus-prayer-check:focus-visible{outline:3px solid #ffe3a1;outline-offset:2px}
-.focus-tabs{width:100%;max-width:840px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;flex:0 0 auto;background:#ffffff14;border:1px solid #ffffff24;padding:5px;border-radius:17px}
-.focus-tab{min-width:0;display:flex;justify-content:center;align-items:center;gap:6px;background:transparent;color:#e7e8fb;border:0;border-radius:12px;padding:11px 4px;cursor:pointer;font-size:13px;font-weight:750}
-.focus-tab small{font-size:11px;opacity:.75;font-weight:650}
-.focus-tab.selected{background:#ffffff;color:#273866;box-shadow:0 3px 10px #060e301f}
-.focus-scroll{flex:1 1 auto;width:100%;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;touch-action:pan-y;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#ffffff80 transparent}
-.focus-reading-page{max-width:840px;width:100%;margin:0 auto;background:#fffefc;color:#313a4d;border-radius:23px;overflow:hidden;box-shadow:0 12px 33px #09133738;animation:focusPageIn .2s ease-out}
-@keyframes focusPageIn{from{opacity:.7;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
-.focus-reading-heading{padding:28px 29px 23px;background:linear-gradient(140deg,#fffefc,#f2f2ff);border-bottom:1px solid #e8e7f0}
-.focus-kicker{font-size:12px;font-weight:750;letter-spacing:1px;color:#7a77a5}
-.focus-reading-heading h2{font-size:clamp(25px,4vw,32px);line-height:1.3;margin:7px 0 6px;color:#343b75}
-.focus-reading-heading p{font-size:13px;color:#727787;margin:0;line-height:1.6}
-.focus-prayer-entry{padding:26px 29px 27px;border-bottom:1px solid #eeeef3;transition:background .2s}
-.focus-prayer-entry.checked{background:linear-gradient(100deg,#fbfffb,#f0faf4)}
-.focus-prayer-title{display:flex;align-items:baseline;gap:12px;margin-bottom:13px}
-.focus-sequence{font-size:12px;font-weight:850;color:#9a91bf;flex:0 0 23px;font-variant-numeric:tabular-nums}
-.focus-prayer-title h3{font-size:clamp(19px,3.3vw,23px);line-height:1.5;letter-spacing:-.5px;margin:0;font-weight:850;overflow-wrap:anywhere;color:#252d4c}
-.focus-prayer-text{font-size:clamp(15px,2.45vw,17px);line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere;color:#4b5160;margin:0 0 17px;padding-left:35px}
-.focus-prayer-check{margin-left:35px;border:1px solid #d9dce7;border-radius:22px;background:#f7f7fb;color:#596178;padding:9px 15px;min-height:39px;font-size:13px;font-weight:750;cursor:pointer}
-.focus-prayer-check>span{font-size:18px;vertical-align:-1px;margin-right:4px}
-.focus-prayer-check.checked{color:#28724b;background:#e4f4e9;border-color:#aedcc1}
-.focus-prayer-check:disabled{opacity:.6;cursor:wait}
-.focus-no-prayers{text-align:center;padding:70px 20px 85px;display:flex;flex-direction:column;gap:12px}
-.focus-no-prayers>div{font-size:43px}
-.focus-no-prayers strong{font-size:18px}
-.focus-no-prayers p{font-size:13px;color:#7e8191;line-height:1.6;margin:0}
-.focus-reading-end{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:20px 29px 23px;color:#768073;background:#fafbf8;font-size:12px}
-.focus-reading-end button{color:#343b75;font-size:13px;font-weight:800;background:#ececf9;border:1px solid #ddddf1;border-radius:14px;padding:9px 13px;cursor:pointer}
-.focus-bottom{max-width:840px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:24px;text-align:left;font-size:11px;opacity:.9;flex:0 0 auto}
-@media(max-width:640px){
- .focus-screen{padding-left:10px;padding-right:10px;gap:9px}
+
+/* Prayer time: a non-scrolling overview with every prayer title fitted into one screen. */
+.focus-screen{height:100vh;height:100dvh;min-height:0;padding:calc(11px + env(safe-area-inset-top,0px)) 12px calc(7px + env(safe-area-inset-bottom,0px));gap:8px;overflow:hidden;display:flex;flex-direction:column}
+.focus-head{flex:0 0 auto;max-width:930px;min-height:31px;gap:12px}
+.focus-brand{display:flex;align-items:center;gap:7px;font-size:16px}
+.focus-brand>span{font-size:18px}
+.focus-close{flex:0 0 auto;border:1px solid #ffffff66;background:#ffffff1a;color:#fff;border-radius:10px;padding:5px 9px;font-size:11px;font-weight:750;line-height:1.4;cursor:pointer}
+.focus-close:focus-visible,.focus-tab:focus-visible,.focus-snapshot-open:focus-visible,.focus-snapshot-heart:focus-visible{outline:3px solid #ffdf91;outline-offset:1px}
+.focus-tabs{width:100%;max-width:930px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;flex:0 0 auto;background:#ffffff15;border:1px solid #ffffff28;padding:4px;border-radius:14px}
+.focus-tab{min-width:0;display:flex;justify-content:center;align-items:center;gap:6px;background:transparent;color:#e6e7fb;border:0;border-radius:10px;padding:8px 3px;cursor:pointer;font-size:12px;font-weight:750}
+.focus-tab small{font-size:10px;opacity:.75}
+.focus-tab.selected{background:#fff;color:#273866;box-shadow:0 3px 10px #0912302b}
+.focus-onepage{flex:1 1 auto;min-height:0;width:100%;max-width:930px;margin:0 auto;overflow:hidden;touch-action:pan-y;display:flex}
+.focus-overview{display:flex;flex-direction:column;flex:1;min-width:0;min-height:0;border-radius:16px;background:#fffefd;color:#303955;box-shadow:0 10px 26px #10183d33;overflow:hidden;animation:focusPageIn .16s ease-out}
+@keyframes focusPageIn{from{opacity:.75;transform:translateX(5px)}to{opacity:1;transform:translateX(0)}}
+.focus-overview-head{flex:0 0 auto;display:flex;gap:12px;align-items:center;justify-content:space-between;background:linear-gradient(110deg,#fffdfd,#f0f1fe);padding:9px 16px;border-bottom:1px solid #e9e7f5;min-height:42px}
+.focus-overview-head h2{font-size:18px;line-height:1.25;color:#343b75;margin:0;font-weight:850}
+.focus-overview-head span{font-size:11px;line-height:1.3;color:#777891;text-align:right}
+.focus-prayer-grid{flex:1;min-height:0;min-width:0;display:grid;grid-auto-flow:column;gap:0;overflow:hidden}
+.focus-snapshot{position:relative;min-height:0;min-width:0;display:flex;align-items:stretch;border-bottom:1px solid #e9ebf0;border-right:1px solid #e9ebf0;background:#fff;overflow:hidden}
+.focus-snapshot.checked{background:linear-gradient(105deg,#f6fff8,#e9f7ef)}
+.focus-snapshot-open{display:flex;align-items:center;gap:8px;text-align:left;padding:5px 6px 5px 11px;border:0;background:transparent;color:#303a51;min-width:0;min-height:0;flex:1;cursor:pointer}
+.focus-snapshot-num{align-self:flex-start;flex:0 0 auto;font-size:10px;font-weight:850;color:#a7a0c2;padding-top:4px}
+.focus-snapshot-text{display:flex;flex-direction:column;min-width:0;max-height:100%;gap:3px;overflow:hidden}
+.focus-snapshot-text strong{font-size:clamp(11px,2.1vw,16px);font-weight:850;line-height:1.35;color:#29304f;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow-wrap:anywhere}
+.focus-snapshot-text small{font-size:clamp(10px,1.7vw,13px);font-weight:400;color:#667082;line-height:1.36;white-space:pre-line;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.focus-prayer-grid.dense .focus-snapshot-text strong{font-size:clamp(11px,1.8vw,14px);-webkit-line-clamp:2}
+.focus-prayer-grid.very-dense .focus-snapshot-text strong{font-size:clamp(10px,1.7vw,13px);-webkit-line-clamp:2}
+.focus-snapshot-heart{flex:0 0 34px;align-self:center;display:grid;place-items:center;width:32px;height:32px;min-height:32px;margin:0 6px 0 0;border:1px solid #ece8f4;border-radius:10px;background:#f9f7fd;color:#8a83a4;font-size:21px;cursor:pointer}
+.focus-snapshot-heart.checked{color:#e35b83;background:#ffe9f0;border-color:#f5c4d4}
+.focus-snapshot-heart:disabled{opacity:.55;cursor:wait}
+.focus-onepage-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:30px;color:#7c8194}
+.focus-onepage-empty>span{font-size:46px}
+.focus-onepage-empty strong{color:#29304f;font-size:17px}
+.focus-onepage-empty p{margin:0;font-size:12px}
+.focus-bottom{flex:0 0 auto;max-width:930px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:21px;margin:0 auto;text-align:left;font-size:10px;opacity:.9}
+.focus-bottom span:last-child{text-align:right}
+.focus-detail-view{flex:1 1 auto;min-height:0;max-width:930px;width:100%;margin:0 auto;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:8px}
+.focus-detail-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 4px;font-size:11px;color:#e4e7ff}
+.focus-detail-toolbar button{border:1px solid #ffffff5c;background:#ffffff1d;color:#fff;border-radius:10px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer}
+.focus-detail-paper{background:#fffefd;border-radius:17px;color:#303955;padding:clamp(16px,4vw,30px);flex:1}
+.focus-detail-paper h2{font-size:clamp(20px,4.2vw,27px);line-height:1.5;color:#303769;margin:0 0 20px;overflow-wrap:anywhere}
+.focus-detail-paper p{font-size:clamp(15px,2.9vw,18px);line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 25px}
+.focus-detail-check{border:1px solid #d9dceb;border-radius:15px;background:#f4f3fb;color:#535b76;padding:12px 17px;font-size:14px;font-weight:800;cursor:pointer}
+.focus-detail-check.checked{background:#e5f6ea;color:#28724b;border-color:#b4d9be}
+@media(max-width:630px){
+ .focus-screen{padding-left:8px;padding-right:8px;gap:7px}
  .focus-head{padding:0 2px}
- .focus-brand{font-size:16px}
- .focus-close{padding:5px 9px;font-size:11px}
- .focus-tab{font-size:12px;gap:3px;padding:10px 2px}
+ .focus-brand{font-size:15px}
+ .focus-close{font-size:11px;padding:4px 8px}
+ .focus-tab{padding:8px 1px;gap:3px;font-size:11px}
  .focus-tab small{font-size:10px}
- .focus-reading-page{border-radius:17px}
- .focus-reading-heading{padding:22px 18px 19px}
- .focus-prayer-entry{padding:23px 18px 25px}
- .focus-prayer-title{gap:8px}
- .focus-sequence{flex-basis:20px;font-size:11px}
- .focus-prayer-text{padding-left:28px;line-height:1.82}
- .focus-prayer-check{margin-left:28px}
- .focus-reading-end{padding:18px;gap:11px}
- .focus-bottom{font-size:10px}
- .focus-bottom span:last-child{text-align:right}
+ .focus-overview{border-radius:13px}
+ .focus-overview-head{padding:7px 11px;min-height:38px}
+ .focus-overview-head h2{font-size:16px}
+ .focus-overview-head span{font-size:10px}
+ .focus-snapshot-open{padding:3px 3px 3px 8px;gap:5px}
+ .focus-snapshot-num{font-size:9px}
+ .focus-snapshot-text strong{font-size:clamp(11px,3.2vw,14px)}
+ .focus-snapshot-text small{font-size:11px}
+ .focus-prayer-grid.dense .focus-snapshot-text strong{font-size:11px}
+ .focus-prayer-grid.very-dense .focus-snapshot-text strong{font-size:10px}
+ .focus-snapshot-heart{flex-basis:28px;width:26px;height:29px;min-height:29px;margin-right:4px;font-size:19px;border-radius:8px}
+ .focus-bottom{font-size:9px}
 }
+@media(max-height:680px){
+ .focus-overview-head{min-height:34px;padding-top:5px;padding-bottom:5px}
+ .focus-snapshot-open{padding-top:2px;padding-bottom:2px}
+ .focus-snapshot-text{gap:1px}
+ .focus-snapshot-text small{-webkit-line-clamp:2}
+ .focus-snapshot-text strong{-webkit-line-clamp:2}
+}
+
+.focus-overview-meta{display:flex;align-items:center;justify-content:flex-end;gap:9px;min-width:0}
+.focus-overview-meta>span{font-size:11px;line-height:1.3;color:#777891;text-align:right}
+.focus-page-nav{display:flex;align-items:center;gap:4px;flex:0 0 auto}
+.focus-page-nav button{display:grid;place-items:center;width:24px;height:25px;border:1px solid #dedff0;background:#fff;color:#343b75;border-radius:7px;font-size:20px;line-height:1;cursor:pointer}
+.focus-page-nav button:disabled{opacity:.34;cursor:default}
+.focus-page-nav strong{font-size:11px;color:#545982;font-variant-numeric:tabular-nums}
+@media(max-width:630px){.focus-overview-meta{gap:4px}.focus-overview-meta>span{font-size:9px}.focus-page-nav{gap:2px}.focus-page-nav button{width:21px;height:23px}}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 </head>
@@ -499,7 +526,10 @@ function App(){
  const [installPrompt,setInstallPrompt]=useState(()=>window.__prayInstallPrompt||null);
  const [appInstalled,setAppInstalled]=useState(()=>window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone===true);
  const [focus,setFocus]=useState(-1),[ownerMembers,setOwnerMembers]=useState({}),[showMemberRoom,setShowMemberRoom]=useState("");
- const focusScrollRef=useRef(null),focusGestureRef=useRef(null);
+ const focusGestureRef=useRef(null);
+ const [focusDetailId,setFocusDetailId]=useState("");
+ const [focusSheet,setFocusSheet]=useState(0);
+ const [focusWindow,setFocusWindow]=useState(()=>({width:window.innerWidth,height:window.innerHeight}));
  const [today,setToday]=useState(koreaToday()),[month,setMonth]=useState(koreaToday().slice(0,7)),[selectedDay,setSelectedDay]=useState(koreaToday());
  const [todayChecks,setTodayChecks]=useState([]),[monthChecks,setMonthChecks]=useState([]),[monthLoading,setMonthLoading]=useState(true),[pendingCheck,setPendingCheck]=useState("");
  const me=user&&user.uid,admin=user&&user.email===ADMIN&&user.emailVerified;
@@ -554,18 +584,33 @@ function App(){
    {id:"personal",label:"개인기도",items:activeAll.filter(p=>p.kind==="personal")}
  ];
  const focusPage=focusPages[Math.min(2,Math.max(0,focus))];
- useEffect(()=>{if(focus>=0&&focusScrollRef.current)focusScrollRef.current.scrollTop=0;},[focus]);
+ const focusCount=focusPage.items.length;
+ const focusTargetRows=Math.max(4,Math.floor((focusWindow.height-185)/62));
+ const focusMaxColumns=focusWindow.width<630?2:focusWindow.width<1080?3:4;
+ const focusPageCapacity=focusTargetRows*focusMaxColumns;
+ const focusPageTotal=Math.max(1,Math.ceil(focusCount/focusPageCapacity));
+ const focusVisibleItems=focusPage.items.slice(focusSheet*focusPageCapacity,(focusSheet+1)*focusPageCapacity);
+ const focusColumns=Math.max(1,Math.min(focusMaxColumns,Math.ceil(focusVisibleItems.length/focusTargetRows)));
+ const focusRows=Math.max(1,Math.ceil(focusVisibleItems.length/focusColumns));
+ const focusDetailPrayer=focusPage.items.find(p=>prayerKey(p)===focusDetailId);
+ useEffect(()=>{
+   const onResize=()=>setFocusWindow({width:window.innerWidth,height:window.innerHeight});
+   window.addEventListener("resize",onResize);
+   return()=>window.removeEventListener("resize",onResize);
+ },[]);
+ useEffect(()=>{setFocusDetailId("");setFocusSheet(0);},[focus]);
+ useEffect(()=>{setFocusSheet(i=>Math.min(i,focusPageTotal-1));},[focusPageTotal]);
  useEffect(()=>{
    if(focus<0)return;
    const handleKey=e=>{
-     if(e.key==="Escape"){setFocus(-1);return;}
+     if(e.key==="Escape"){if(focusDetailId)setFocusDetailId("");else setFocus(-1);return;}
      if(e.target&&["INPUT","TEXTAREA","SELECT"].includes(e.target.tagName))return;
      if(e.key==="ArrowLeft")setFocus(i=>Math.max(0,i-1));
      if(e.key==="ArrowRight")setFocus(i=>Math.min(2,i+1));
    };
    window.addEventListener("keydown",handleKey);
    return()=>window.removeEventListener("keydown",handleKey);
- },[focus]);
+ },[focus,focusDetailId]);
  const orphanAnswered=answeredChecks.filter(c=>!all.some(p=>answerId(p)===c.id)).map(c=>({id:c.prayerId,kind:c.kind,roomId:c.roomId||"",roomName:c.roomName||"",title:c.titleSnapshot||"보관된 기도",content:"원래 기도제목이 삭제되거나 공유가 종료되어 제목만 보관되어 있습니다.",archivedOriginal:true}));
  const sectionSource=section==="church"?church:section==="team"?allTeam:section==="personal"?personal:all;
  const fromSection=[...sectionSource,...orphanAnswered.filter(p=>section==="all"||p.kind===section)];
@@ -732,32 +777,41 @@ function App(){
        <span>{page.label}</span><small>{page.items.length}</small>
      </button>)}
    </nav>
-   <div className="focus-scroll" ref={focusScrollRef} onTouchStart={startFocusSwipe} onTouchEnd={endFocusSwipe} onTouchCancel={()=>{focusGestureRef.current=null;}}>
-     <section className="focus-reading-page" key={focusPage.id} aria-label={focusPage.label+" 기도제목 목록"}>
-       <header className="focus-reading-heading">
-         <span className="focus-kicker">오늘 함께 마음을 모아요</span>
-         <h2>{focusPage.label}</h2>
-         <p>{focusPage.items.length}개의 기도제목을 천천히 읽으며 기도해 보세요.</p>
-       </header>
-       {focusPage.items.length?focusPage.items.map((p,i)=>{
-         const checked=isChecked(p,today);
-         return <article key={prayerKey(p)} className={"focus-prayer-entry "+(checked?"checked":"")}>
-           <div className="focus-prayer-title"><span className="focus-sequence">{String(i+1).padStart(2,"0")}</span><h3>{p.title||"기도제목"}</h3></div>
-           <p className="focus-prayer-text">{p.content||""}</p>
-           <button type="button" className={"focus-prayer-check "+(checked?"checked":"")} aria-pressed={checked} disabled={pendingCheck===checkId(p,today)} onClick={()=>togglePrayer(p,today)}>
-             <span aria-hidden="true">{checked?"♥":"♡"}</span> {checked?"오늘 기도했어요":"기도했어요"}
-           </button>
-         </article>;
-       }):<div className="focus-no-prayers"><div>🌱</div><strong>아직 진행 중인 기도제목이 없어요.</strong><p>위쪽 탭을 누르거나 좌우로 밀어 다른 기도를 확인해 보세요.</p></div>}
-       <div className="focus-reading-end">
-         <span>🌿 {focusPage.items.length?"이 페이지의 기도제목을 모두 살펴봤어요.":"기도제목이 등록되면 여기에 나타납니다."}</span>
-         {focus<2&&<button type="button" onClick={()=>setFocus(i=>Math.min(2,i+1))}>다음 · {focusPages[focus+1].label} →</button>}
+   {focusDetailPrayer?<div className="focus-detail-view" key={focusDetailId}>
+     <div className="focus-detail-toolbar"><button type="button" onClick={()=>setFocusDetailId("")}>← 기도제목 전체보기</button><span>{focusPage.label}</span></div>
+     <article className="focus-detail-paper">
+       <h2>{focusDetailPrayer.title||"기도제목"}</h2>
+       <p>{focusDetailPrayer.content||""}</p>
+       <button type="button" className={"focus-detail-check "+(isChecked(focusDetailPrayer,today)?"checked":"")} disabled={pendingCheck===checkId(focusDetailPrayer,today)} onClick={()=>togglePrayer(focusDetailPrayer,today)}>
+         {isChecked(focusDetailPrayer,today)?"♥ 오늘 기도했어요":"♡ 기도했어요"}
+       </button>
+     </article>
+   </div>:<div className="focus-onepage" onTouchStart={startFocusSwipe} onTouchEnd={endFocusSwipe} onTouchCancel={()=>{focusGestureRef.current=null;}}>
+     <section className="focus-overview" key={focusPage.id} aria-label={focusPage.label+" 기도제목 한 화면"}>
+       <div className="focus-overview-head"><h2>{focusPage.label}</h2>
+         <div className="focus-overview-meta"><span>기도제목 {focusCount}개 · 누르면 내용 보기</span>
+           {focusPageTotal>1&&<div className="focus-page-nav"><button type="button" disabled={focusSheet===0} onClick={()=>setFocusSheet(i=>Math.max(0,i-1))} aria-label="이전 기도제목 묶음">‹</button><strong>{focusSheet+1}/{focusPageTotal}</strong><button type="button" disabled={focusSheet>=focusPageTotal-1} onClick={()=>setFocusSheet(i=>Math.min(focusPageTotal-1,i+1))} aria-label="다음 기도제목 묶음">›</button></div>}
+         </div>
        </div>
+       {focusCount?<div className={"focus-prayer-grid "+(focusCount>10?"very-dense":focusCount>5?"dense":"")} style={{gridTemplateColumns:"repeat("+focusColumns+",minmax(0,1fr))",gridTemplateRows:"repeat("+focusRows+",minmax(0,1fr))"}}>
+         {focusVisibleItems.map((p,i)=>{
+           const checked=isChecked(p,today);
+           return <article className={"focus-snapshot "+(checked?"checked":"")} key={prayerKey(p)}>
+             <button type="button" className="focus-snapshot-open" onClick={()=>setFocusDetailId(prayerKey(p))} title="기도 내용 자세히 보기">
+               <span className="focus-snapshot-num">{String(focusSheet*focusPageCapacity+i+1).padStart(2,"0")}</span>
+               <span className="focus-snapshot-text"><strong>{p.title||"기도제목"}</strong>
+                 {focusCount<=4&&<small>{p.content||""}</small>}
+               </span>
+             </button>
+             <button type="button" className={"focus-snapshot-heart "+(checked?"checked":"")} aria-label={checked?"오늘 기도 체크 취소":"오늘 기도했어요"} aria-pressed={checked} disabled={pendingCheck===checkId(p,today)} onClick={()=>togglePrayer(p,today)}>{checked?"♥":"♡"}</button>
+           </article>;
+         })}
+       </div>:<div className="focus-onepage-empty"><span>🌱</span><strong>진행 중인 기도제목이 없어요.</strong><p>다른 기도 종류로 좌우 이동해 보세요.</p></div>}
      </section>
-   </div>
+   </div>}
    <div className="focus-bottom">
-     <span>오늘 기도 체크 {focusPage.items.filter(p=>isChecked(p,today)).length}/{focusPage.items.length}</span>
-     <span>← 좌우로 넘기기 · 위아래로 읽기 →</span>
+     <span>♥ 오늘 {focusPage.items.filter(p=>isChecked(p,today)).length}/{focusCount} 기도</span>
+     <span>{focusDetailPrayer?"내용을 읽고 목록으로 돌아가세요.":"← 좌우로 넘기기 · 한 화면에 모두 보기 →"}</span>
    </div>
  </div>}
  {toast&&<div className="toast" role="status">{toast}</div>}</>;
