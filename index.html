@@ -388,6 +388,60 @@ html,body,#root{max-width:100%;overflow-x:clip}
  .compact-topline{gap:5px}
  .compact-pray-btn{flex-basis:33px;width:33px;min-width:33px;height:33px;border-radius:11px;font-size:23px}
 }
+
+/* Prayer time: one swipeable page per category, with every title in a vertical reading list. */
+.focus-screen{height:100vh;height:100dvh;min-height:0;padding:calc(13px + env(safe-area-inset-top,0px)) 14px calc(9px + env(safe-area-inset-bottom,0px));gap:11px;overflow:hidden}
+.focus-head{flex:0 0 auto;max-width:840px;min-height:34px;gap:14px}
+.focus-brand{display:flex;align-items:center;gap:8px;font-size:17px;letter-spacing:-.3px}
+.focus-brand>span{font-size:19px}
+.focus-close{flex:0 0 auto;border:1px solid #ffffff65;background:#ffffff1e;color:#fff;border-radius:12px;padding:6px 10px;font-size:12px;font-weight:700;line-height:1.4;cursor:pointer}
+.focus-close:focus-visible,.focus-tab:focus-visible,.focus-prayer-check:focus-visible{outline:3px solid #ffe3a1;outline-offset:2px}
+.focus-tabs{width:100%;max-width:840px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;flex:0 0 auto;background:#ffffff14;border:1px solid #ffffff24;padding:5px;border-radius:17px}
+.focus-tab{min-width:0;display:flex;justify-content:center;align-items:center;gap:6px;background:transparent;color:#e7e8fb;border:0;border-radius:12px;padding:11px 4px;cursor:pointer;font-size:13px;font-weight:750}
+.focus-tab small{font-size:11px;opacity:.75;font-weight:650}
+.focus-tab.selected{background:#ffffff;color:#273866;box-shadow:0 3px 10px #060e301f}
+.focus-scroll{flex:1 1 auto;width:100%;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;touch-action:pan-y;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#ffffff80 transparent}
+.focus-reading-page{max-width:840px;width:100%;margin:0 auto;background:#fffefc;color:#313a4d;border-radius:23px;overflow:hidden;box-shadow:0 12px 33px #09133738;animation:focusPageIn .2s ease-out}
+@keyframes focusPageIn{from{opacity:.7;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.focus-reading-heading{padding:28px 29px 23px;background:linear-gradient(140deg,#fffefc,#f2f2ff);border-bottom:1px solid #e8e7f0}
+.focus-kicker{font-size:12px;font-weight:750;letter-spacing:1px;color:#7a77a5}
+.focus-reading-heading h2{font-size:clamp(25px,4vw,32px);line-height:1.3;margin:7px 0 6px;color:#343b75}
+.focus-reading-heading p{font-size:13px;color:#727787;margin:0;line-height:1.6}
+.focus-prayer-entry{padding:26px 29px 27px;border-bottom:1px solid #eeeef3;transition:background .2s}
+.focus-prayer-entry.checked{background:linear-gradient(100deg,#fbfffb,#f0faf4)}
+.focus-prayer-title{display:flex;align-items:baseline;gap:12px;margin-bottom:13px}
+.focus-sequence{font-size:12px;font-weight:850;color:#9a91bf;flex:0 0 23px;font-variant-numeric:tabular-nums}
+.focus-prayer-title h3{font-size:clamp(19px,3.3vw,23px);line-height:1.5;letter-spacing:-.5px;margin:0;font-weight:850;overflow-wrap:anywhere;color:#252d4c}
+.focus-prayer-text{font-size:clamp(15px,2.45vw,17px);line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere;color:#4b5160;margin:0 0 17px;padding-left:35px}
+.focus-prayer-check{margin-left:35px;border:1px solid #d9dce7;border-radius:22px;background:#f7f7fb;color:#596178;padding:9px 15px;min-height:39px;font-size:13px;font-weight:750;cursor:pointer}
+.focus-prayer-check>span{font-size:18px;vertical-align:-1px;margin-right:4px}
+.focus-prayer-check.checked{color:#28724b;background:#e4f4e9;border-color:#aedcc1}
+.focus-prayer-check:disabled{opacity:.6;cursor:wait}
+.focus-no-prayers{text-align:center;padding:70px 20px 85px;display:flex;flex-direction:column;gap:12px}
+.focus-no-prayers>div{font-size:43px}
+.focus-no-prayers strong{font-size:18px}
+.focus-no-prayers p{font-size:13px;color:#7e8191;line-height:1.6;margin:0}
+.focus-reading-end{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:20px 29px 23px;color:#768073;background:#fafbf8;font-size:12px}
+.focus-reading-end button{color:#343b75;font-size:13px;font-weight:800;background:#ececf9;border:1px solid #ddddf1;border-radius:14px;padding:9px 13px;cursor:pointer}
+.focus-bottom{max-width:840px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:24px;text-align:left;font-size:11px;opacity:.9;flex:0 0 auto}
+@media(max-width:640px){
+ .focus-screen{padding-left:10px;padding-right:10px;gap:9px}
+ .focus-head{padding:0 2px}
+ .focus-brand{font-size:16px}
+ .focus-close{padding:5px 9px;font-size:11px}
+ .focus-tab{font-size:12px;gap:3px;padding:10px 2px}
+ .focus-tab small{font-size:10px}
+ .focus-reading-page{border-radius:17px}
+ .focus-reading-heading{padding:22px 18px 19px}
+ .focus-prayer-entry{padding:23px 18px 25px}
+ .focus-prayer-title{gap:8px}
+ .focus-sequence{flex-basis:20px;font-size:11px}
+ .focus-prayer-text{padding-left:28px;line-height:1.82}
+ .focus-prayer-check{margin-left:28px}
+ .focus-reading-end{padding:18px;gap:11px}
+ .focus-bottom{font-size:10px}
+ .focus-bottom span:last-child{text-align:right}
+}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 </head>
@@ -397,7 +451,7 @@ const cfg={apiKey:"AIzaSyCyvxYXSpQAraMukoiQBDgBjqEGYMUx38I",authDomain:"mock-inv
 firebase.initializeApp(cfg);
 const auth=firebase.auth(), db=firebase.firestore(), stamp=()=>firebase.firestore.FieldValue.serverTimestamp();
 const ADMIN="egibynote105g@gmail.com";
-const {useState,useEffect,useMemo}=React;
+const {useState,useEffect,useMemo,useRef}=React;
 function fmt(d){if(!d)return "";return String(d).replaceAll("-",".");}
 function labelError(e){const c=e&&e.code||"";if(c.includes("permission-denied"))return "권한이 없습니다. 로그인 상태나 기도방 비밀번호를 확인해 주세요.";if(c.includes("network"))return "네트워크 연결을 확인해 주세요.";if(c.includes("popup-closed"))return "로그인 창이 닫혔습니다.";return e&&e.message||"잠시 후 다시 시도해 주세요.";}
 
@@ -445,6 +499,7 @@ function App(){
  const [installPrompt,setInstallPrompt]=useState(()=>window.__prayInstallPrompt||null);
  const [appInstalled,setAppInstalled]=useState(()=>window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone===true);
  const [focus,setFocus]=useState(-1),[ownerMembers,setOwnerMembers]=useState({}),[showMemberRoom,setShowMemberRoom]=useState("");
+ const focusScrollRef=useRef(null),focusGestureRef=useRef(null);
  const [today,setToday]=useState(koreaToday()),[month,setMonth]=useState(koreaToday().slice(0,7)),[selectedDay,setSelectedDay]=useState(koreaToday());
  const [todayChecks,setTodayChecks]=useState([]),[monthChecks,setMonthChecks]=useState([]),[monthLoading,setMonthLoading]=useState(true),[pendingCheck,setPendingCheck]=useState("");
  const me=user&&user.uid,admin=user&&user.email===ADMIN&&user.emailVerified;
@@ -493,6 +548,24 @@ function App(){
  const answeredIds=new Set(answeredChecks.map(c=>c.id));
  const isAnswered=p=>answeredIds.has(answerId(p));
  const activeAll=all.filter(p=>!isAnswered(p));
+ const focusPages=[
+   {id:"church",label:"교회기도",items:activeAll.filter(p=>p.kind==="church")},
+   {id:"team",label:"팀기도",items:activeAll.filter(p=>p.kind==="team")},
+   {id:"personal",label:"개인기도",items:activeAll.filter(p=>p.kind==="personal")}
+ ];
+ const focusPage=focusPages[Math.min(2,Math.max(0,focus))];
+ useEffect(()=>{if(focus>=0&&focusScrollRef.current)focusScrollRef.current.scrollTop=0;},[focus]);
+ useEffect(()=>{
+   if(focus<0)return;
+   const handleKey=e=>{
+     if(e.key==="Escape"){setFocus(-1);return;}
+     if(e.target&&["INPUT","TEXTAREA","SELECT"].includes(e.target.tagName))return;
+     if(e.key==="ArrowLeft")setFocus(i=>Math.max(0,i-1));
+     if(e.key==="ArrowRight")setFocus(i=>Math.min(2,i+1));
+   };
+   window.addEventListener("keydown",handleKey);
+   return()=>window.removeEventListener("keydown",handleKey);
+ },[focus]);
  const orphanAnswered=answeredChecks.filter(c=>!all.some(p=>answerId(p)===c.id)).map(c=>({id:c.prayerId,kind:c.kind,roomId:c.roomId||"",roomName:c.roomName||"",title:c.titleSnapshot||"보관된 기도",content:"원래 기도제목이 삭제되거나 공유가 종료되어 제목만 보관되어 있습니다.",archivedOriginal:true}));
  const sectionSource=section==="church"?church:section==="team"?allTeam:section==="personal"?personal:all;
  const fromSection=[...sectionSource,...orphanAnswered.filter(p=>section==="all"||p.kind===section)];
@@ -522,7 +595,22 @@ function App(){
  function openPrayer(kind,roomId,record){const chosen=kind||"team";if(chosen==="team"&&!joined.length&&!record){setSection("rooms");flash("팀 기도제목을 등록하려면 먼저 기도방을 만들거나 참가해 주세요.");return;}setDraft(record?{...record}:{kind:chosen,roomId:roomId||joined[0]?.id||"",title:"",content:"",startDate:"",endDate:""});setModal("prayer");}
  function openRoom(){setDraft({name:"",code:"",startDate:"",endDate:"",initialTitle:"",initialContent:""});setModal("room");}
  function openJoin(r){setDraft({roomId:r.id,roomName:r.name,code:""});setModal("join");}
- function focusNow(){if(!activeAll.length){flash("진행 중인 기도제목이 없어요.");return;}setFocus(0);}
+ function focusNow(){
+   if(!activeAll.length){flash("진행 중인 기도제목이 없어요.");return;}
+   setFocus(Math.max(0,focusPages.findIndex(page=>page.items.length>0)));
+ }
+ function startFocusSwipe(e){
+   if(e.touches.length!==1){focusGestureRef.current=null;return;}
+   focusGestureRef.current={x:e.touches[0].clientX,y:e.touches[0].clientY};
+ }
+ function endFocusSwipe(e){
+   const start=focusGestureRef.current;
+   focusGestureRef.current=null;
+   if(!start||!e.changedTouches.length)return;
+   const dx=e.changedTouches[0].clientX-start.x,dy=e.changedTouches[0].clientY-start.y;
+   if(Math.abs(dx)<65||Math.abs(dx)<Math.abs(dy)*1.4)return;
+   setFocus(i=>Math.max(0,Math.min(2,i+(dx<0?1:-1))));
+ }
  async function doLogin(){setBusy(true);try{const provider=new firebase.auth.GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});await auth.signInWithPopup(provider);}catch(e){if(["auth/popup-blocked","auth/operation-not-supported-in-this-environment"].includes(e.code)){try{await auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());}catch(e2){flash(labelError(e2));}}else flash(labelError(e));}finally{setBusy(false);}}
  async function savePrayer(e){e.preventDefault();if(!draft.title?.trim()||!draft.content?.trim())return flash("기도명과 기도제목을 입력해 주세요.");if(draft.startDate&&draft.endDate&&draft.startDate>draft.endDate)return flash("종료일은 시작일 이후로 입력해 주세요.");if(draft.kind==="church"&&!admin)return flash("교회 기도제목은 관리자만 등록할 수 있습니다.");if(draft.kind==="team"&&!joined.some(r=>r.id===draft.roomId))return flash("기도팀을 선택해 주세요.");
   const data={title:draft.title.trim().slice(0,100),content:draft.content.trim().slice(0,5000),startDate:draft.startDate||"",endDate:draft.endDate||"",updatedAt:stamp()};
@@ -634,7 +722,44 @@ function App(){
  <div className="field"><label>기도제목 *</label><textarea required maxLength="5000" placeholder="기도할 내용을 편안하게 적어주세요." value={draft.content||""} onChange={e=>setDraft(d=>({...d,content:e.target.value}))}/></div><div className="modal-actions"><button type="button" className="outline" onClick={()=>setModal(null)}>취소</button><button className="primary" disabled={busy}>{busy?"저장 중…":"저장하기"}</button></div></form>
  :modal==="room"?<form onSubmit={createRoom}><div className="field"><label>기도방 이름 *</label><input required maxLength="80" placeholder="예: 절대 믿음 40일 기도팀" value={draft.name||""} onChange={e=>setDraft(d=>({...d,name:e.target.value}))}/></div><div className="field-row"><div className="field"><label>기도 시작일</label><input type="date" value={draft.startDate||""} onChange={e=>setDraft(d=>({...d,startDate:e.target.value}))}/></div><div className="field"><label>기도 종료일</label><input type="date" value={draft.endDate||""} onChange={e=>setDraft(d=>({...d,endDate:e.target.value}))}/></div></div><div className="field"><label>참가 비밀번호 * (4자리 이상 · 숫자 가능)</label><input required minLength="4" maxLength="64" autoComplete="off" type="password" placeholder="팀원에게 전달할 비밀번호" value={draft.code||""} onChange={e=>setDraft(d=>({...d,code:e.target.value}))}/><span className="form-help">숫자만 4자리 이상으로 설정할 수 있습니다. 추측하기 어렵도록 6자리 이상을 권장합니다. 비밀번호는 공개 목록에 표시되지 않습니다.</span></div><div className="field"><label>첫 번째 기도명 (선택)</label><input maxLength="100" placeholder="예: 우리 팀의 기도제목" value={draft.initialTitle||""} onChange={e=>setDraft(d=>({...d,initialTitle:e.target.value}))}/></div><div className="field"><label>첫 번째 기도제목 (선택)</label><textarea placeholder="첫 기도제목을 함께 등록할 수 있어요." value={draft.initialContent||""} onChange={e=>setDraft(d=>({...d,initialContent:e.target.value}))}/></div><div className="modal-actions"><button className="outline" type="button" onClick={()=>setModal(null)}>취소</button><button className="primary" disabled={busy}>{busy?"만드는 중…":"기도방 만들기"}</button></div></form>
  :<form onSubmit={joinRoom}><p style={{fontSize:14,color:"#687b6d",lineHeight:1.8}}><strong>{draft.roomName}</strong>에 참가하시려면 팀장이 알려준 비밀번호를 입력하세요.</p><div className="field"><label>기도방 비밀번호</label><input required minLength="4" maxLength="64" type="password" autoComplete="off" placeholder="4자리 이상 비밀번호 입력" value={draft.code||""} onChange={e=>setDraft(d=>({...d,code:e.target.value}))}/></div><div className="modal-actions"><button type="button" className="outline" onClick={()=>setModal(null)}>취소</button><button className="primary" disabled={busy}>{busy?"확인 중…":"기도방 참가하기"}</button></div></form>}</div></div>}
- {focus>=0&&activeAll.length>0&&<div className="focus-screen"><div className="focus-head"><strong>🌿 기도의 시간</strong><button className="primary light" onClick={()=>setFocus(-1)}>✕ 마치기</button></div><div className="focus-center"><div className="circle">🙏</div><span className="counter">{focus+1} / {activeAll.length}</span><h2>{activeAll[Math.min(focus,activeAll.length-1)].title}</h2><span className="tag">{activeAll[Math.min(focus,activeAll.length-1)].kind==="church"?"교회 기도":activeAll[Math.min(focus,activeAll.length-1)].kind==="team"?"팀 기도":"개인 기도"}</span><p>{activeAll[Math.min(focus,activeAll.length-1)].content}</p><div className="focus-controls"><button className="outline" disabled={focus===0} onClick={()=>setFocus(i=>Math.max(0,i-1))}>← 이전 제목</button><button className="primary light" style={{background:isChecked(activeAll[Math.min(focus,activeAll.length-1)],today)?"#d0ecd9":"#fff8dc"}} onClick={()=>togglePrayer(activeAll[Math.min(focus,activeAll.length-1)],today)} disabled={pendingCheck===checkId(activeAll[Math.min(focus,activeAll.length-1)],today)}>{isChecked(activeAll[Math.min(focus,activeAll.length-1)],today)?"✓ 오늘 기도했어요":"🙏 기도했어요"}</button><button className="primary light" disabled={focus>=activeAll.length-1} onClick={()=>setFocus(i=>Math.min(activeAll.length-1,i+1))}>다음 제목 →</button></div></div><div className="focus-bottom">잠시 멈추어 기도의 내용에 마음을 모아보세요.</div></div>}
+ {focus>=0&&activeAll.length>0&&<div className="focus-screen" role="dialog" aria-modal="true" aria-label="기도의 시간">
+   <div className="focus-head">
+     <div className="focus-brand"><span>🌿</span><strong>기도의 시간</strong></div>
+     <button type="button" className="focus-close" onClick={()=>setFocus(-1)} aria-label="기도의 시간 마치기">✕ 마치기</button>
+   </div>
+   <nav className="focus-tabs" aria-label="기도 종류 선택">
+     {focusPages.map((page,i)=><button key={page.id} type="button" className={"focus-tab "+(focus===i?"selected":"")} aria-current={focus===i?"page":undefined} onClick={()=>setFocus(i)}>
+       <span>{page.label}</span><small>{page.items.length}</small>
+     </button>)}
+   </nav>
+   <div className="focus-scroll" ref={focusScrollRef} onTouchStart={startFocusSwipe} onTouchEnd={endFocusSwipe} onTouchCancel={()=>{focusGestureRef.current=null;}}>
+     <section className="focus-reading-page" key={focusPage.id} aria-label={focusPage.label+" 기도제목 목록"}>
+       <header className="focus-reading-heading">
+         <span className="focus-kicker">오늘 함께 마음을 모아요</span>
+         <h2>{focusPage.label}</h2>
+         <p>{focusPage.items.length}개의 기도제목을 천천히 읽으며 기도해 보세요.</p>
+       </header>
+       {focusPage.items.length?focusPage.items.map((p,i)=>{
+         const checked=isChecked(p,today);
+         return <article key={prayerKey(p)} className={"focus-prayer-entry "+(checked?"checked":"")}>
+           <div className="focus-prayer-title"><span className="focus-sequence">{String(i+1).padStart(2,"0")}</span><h3>{p.title||"기도제목"}</h3></div>
+           <p className="focus-prayer-text">{p.content||""}</p>
+           <button type="button" className={"focus-prayer-check "+(checked?"checked":"")} aria-pressed={checked} disabled={pendingCheck===checkId(p,today)} onClick={()=>togglePrayer(p,today)}>
+             <span aria-hidden="true">{checked?"♥":"♡"}</span> {checked?"오늘 기도했어요":"기도했어요"}
+           </button>
+         </article>;
+       }):<div className="focus-no-prayers"><div>🌱</div><strong>아직 진행 중인 기도제목이 없어요.</strong><p>위쪽 탭을 누르거나 좌우로 밀어 다른 기도를 확인해 보세요.</p></div>}
+       <div className="focus-reading-end">
+         <span>🌿 {focusPage.items.length?"이 페이지의 기도제목을 모두 살펴봤어요.":"기도제목이 등록되면 여기에 나타납니다."}</span>
+         {focus<2&&<button type="button" onClick={()=>setFocus(i=>Math.min(2,i+1))}>다음 · {focusPages[focus+1].label} →</button>}
+       </div>
+     </section>
+   </div>
+   <div className="focus-bottom">
+     <span>오늘 기도 체크 {focusPage.items.filter(p=>isChecked(p,today)).length}/{focusPage.items.length}</span>
+     <span>← 좌우로 넘기기 · 위아래로 읽기 →</span>
+   </div>
+ </div>}
  {toast&&<div className="toast" role="status">{toast}</div>}</>;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
