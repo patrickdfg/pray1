@@ -117,13 +117,20 @@ service cloud.firestore {
         allow delete: if signedIn() && (request.auth.uid == memberId || isOwner(roomId));
       }
       match /prayers/{prayerId} {
-        allow read: if isRoomActive(roomId) && (isOwner(roomId) || isMember(roomId));
+        // Anyone who owns or has joined the room can read and add prayers.
+        // The verified site admin can manage prayers across all rooms.
+        allow read: if isRoomActive(roomId) &&
+          (isOwner(roomId) || isMember(roomId) || isAdmin());
         allow create: if isRoomActive(roomId) &&
-          (isOwner(roomId) || isMember(roomId)) && createdPrayer();
-        allow update: if isRoomActive(roomId) &&
-          (isOwner(roomId) || isMember(roomId)) && updatedPrayer();
+          (isOwner(roomId) || isMember(roomId) || isAdmin()) && createdPrayer();
+        // Only the original author, room owner, or verified site admin may
+        // change or remove an existing shared team prayer.
+        allow update: if isRoomActive(roomId) && updatedPrayer() &&
+          (isOwner(roomId) || isAdmin() ||
+            (isMember(roomId) && resource.data.createdBy == request.auth.uid));
         allow delete: if isRoomActive(roomId) &&
-          (isOwner(roomId) || isMember(roomId));
+          (isOwner(roomId) || isAdmin() ||
+            (isMember(roomId) && resource.data.createdBy == request.auth.uid));
       }
     }
     match /roomCodes/{roomId} {
