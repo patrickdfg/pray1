@@ -595,6 +595,11 @@ html,body,#root{max-width:100%;overflow-x:clip}
  .focus-snapshot-heart{flex-basis:34px;width:34px;height:34px;min-height:34px;font-size:23px;margin-right:8px;border-radius:10px}
  .focus-prayer-grid.spotlight .focus-snapshot-heart{flex-basis:38px;width:38px;height:38px;min-height:38px;font-size:24px;border-radius:12px}
 }
+
+/* 기도하기 단일 카드에서는 본문을 생략하지 않고 카드 안에서 끝까지 읽습니다. */
+.focus-prayer-grid.spotlight .focus-snapshot-open{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;justify-content:safe center}
+.focus-prayer-grid.spotlight .focus-snapshot-text{max-height:none;overflow:visible;flex:0 0 auto}
+.focus-prayer-grid.spotlight .focus-snapshot-text strong,.focus-prayer-grid.spotlight .focus-snapshot-text small{display:block;overflow:visible;-webkit-line-clamp:unset}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 </head>
