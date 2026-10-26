@@ -547,6 +547,54 @@ html,body,#root{max-width:100%;overflow-x:clip}
  .focus-snapshot-open{padding-top:6px;padding-bottom:6px}
  .focus-snapshot-text small{-webkit-line-clamp:1}
 }
+
+/* 기도의 시간 화면의 눈부심을 줄이는 야간 색상과 작은 하트 버튼 */
+.focus-screen{color:#dce8e2;background:radial-gradient(circle at 90% 0%,#22343c 0,transparent 40%),linear-gradient(155deg,#111e26,#0b151b 72%,#0c1920)}
+.focus-brand{color:#e4eee5}
+.focus-close{background:#25353b;border-color:#445961;color:#d3e3dc}
+.focus-tabs{background:#182930;border-color:#344951}
+.focus-tab{color:#b9cfc9}
+.focus-tab small{color:#a4bab3}
+.focus-tab.selected{background:#314a4a;color:#e9f2e8;box-shadow:0 2px 9px #0004}
+.focus-tab.selected small{color:#d2e5d9}
+.focus-overview{background:#19272e;border-color:#34464e;box-shadow:0 14px 28px #0005}
+.focus-overview-head{background:linear-gradient(110deg,#23343d,#1d2c35);border-bottom-color:#3c4c53}
+.focus-overview-head h2{color:#e5eee7}
+.focus-overview-meta>span{color:#adbfba}
+.focus-prayer-grid{background:linear-gradient(160deg,#18272d,#14232a)}
+.focus-snapshot{background:#1d2930;border-color:#364a50;box-shadow:0 2px 12px #0003}
+.focus-snapshot::before{background:linear-gradient(#698d93,#669581)}
+.focus-snapshot.checked{background:linear-gradient(115deg,#20362f,#1b302b);border-color:#45675b}
+.focus-snapshot.checked::before{background:linear-gradient(#75b8a0,#588e78)}
+.focus-snapshot-open{color:#e0ebe3}
+.focus-snapshot-num{background:#2d424a;color:#c0d5d1}
+.focus-snapshot-text strong,.focus-prayer-grid.dense .focus-snapshot-text strong,.focus-prayer-grid.very-dense .focus-snapshot-text strong{color:#e6eee8}
+.focus-snapshot-text small{color:#bfcfc7}
+.focus-snapshot-heart{flex:0 0 34px;width:34px;height:34px;min-height:34px;margin-right:10px;font-size:23px;border-radius:11px;background:#2b3940;border-color:#506169;color:#c0d0c8;box-shadow:none}
+.focus-snapshot-heart.checked{background:#493a43;border-color:#765662;color:#e5b2c2}
+.focus-snapshot-heart:focus-visible{outline-color:#a8d0b3}
+.focus-prayer-grid.spotlight .focus-snapshot{background:radial-gradient(circle at 90% 8%,#294037 0,transparent 43%),radial-gradient(circle at 5% 92%,#263745 0,transparent 48%),linear-gradient(150deg,#1d2e35,#17262c);border-color:#40544f;box-shadow:0 8px 24px #0004}
+.focus-prayer-grid.spotlight .focus-snapshot-num{background:#334f45;color:#d7eadb}
+.focus-prayer-grid.spotlight .focus-snapshot-text strong{color:#e6eee8}
+.focus-prayer-grid.spotlight .focus-snapshot-text small{color:#c2d2ca}
+.focus-prayer-grid.spotlight .focus-snapshot-heart{flex:0 0 40px;width:40px;height:40px;min-height:40px;font-size:26px;border-radius:12px;box-shadow:0 3px 11px #0004}
+.focus-onepage-empty{background:linear-gradient(145deg,#1e2d34,#193026);color:#b9c9c1}
+.focus-onepage-empty strong{color:#e5eee7}
+.focus-onepage-empty p{color:#baccc2}
+.focus-page-nav button{background:#32454c;border-color:#52656b;color:#e7efe9}
+.focus-page-nav strong{color:#d2e2d8}
+.focus-bottom{color:#c4d4ca}
+.focus-detail-toolbar{color:#b9cfc7}
+.focus-detail-toolbar button{background:#293c43;border-color:#4b6567;color:#d6e6db}
+.focus-detail-paper{background:linear-gradient(145deg,#203039,#1a2930);color:#dce9e0;border:1px solid #3a4e53}
+.focus-detail-paper h2{color:#e7f0e9}
+.focus-detail-paper p{color:#c5d4cb}
+.focus-detail-check{background:#2d4049;border-color:#4c626b;color:#d5e3da}
+.focus-detail-check.checked{background:#29473c;border-color:#4f7967;color:#b9e0c5}
+@media(max-width:630px){
+ .focus-snapshot-heart{flex-basis:34px;width:34px;height:34px;min-height:34px;font-size:23px;margin-right:8px;border-radius:10px}
+ .focus-prayer-grid.spotlight .focus-snapshot-heart{flex-basis:38px;width:38px;height:38px;min-height:38px;font-size:24px;border-radius:12px}
+}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 </head>
