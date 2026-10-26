@@ -506,9 +506,9 @@ html,body,#root{max-width:100%;overflow-x:clip}
 .focus-prayer-grid.spotlight .focus-snapshot-open{flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(28px,6vw,72px);gap:23px}
 .focus-prayer-grid.spotlight .focus-snapshot-num{width:auto;height:auto;padding:9px 16px;font-size:13px;letter-spacing:.01em;border-radius:999px;background:#e2f3e9;color:#357456}
 .focus-prayer-grid.spotlight .focus-snapshot-text{gap:20px;align-items:center;flex:0 1 auto;width:100%;max-width:600px}
-.focus-prayer-grid.spotlight .focus-snapshot-text strong{font-size:clamp(27px,6vw,42px);line-height:1.38;-webkit-line-clamp:3;color:#1f3b43}
-.focus-prayer-grid.spotlight .focus-snapshot-text small{font-size:clamp(19px,3.7vw,24px);line-height:1.78;color:#4d655e;-webkit-line-clamp:10}
-.focus-prayer-grid.spotlight .focus-snapshot-heart{position:absolute;bottom:27px;right:27px;flex:0 0 54px;width:54px;height:54px;margin:0;font-size:36px;border-radius:18px;box-shadow:0 4px 14px #482c4220}
+.focus-prayer-grid.spotlight .focus-snapshot-text strong{font-size:clamp(27px,6vw,42px);line-height:1.38;-webkit-line-clamp:3;color:#1f3b43;word-break:keep-all;overflow-wrap:break-word}
+.focus-prayer-grid.spotlight .focus-snapshot-text small{font-size:clamp(19px,3.7vw,24px);line-height:1.78;color:#4d655e;-webkit-line-clamp:10;word-break:keep-all;overflow-wrap:break-word}
+.focus-prayer-grid.spotlight .focus-snapshot-heart{position:absolute;top:22px;right:22px;bottom:auto;flex:0 0 54px;width:54px;height:54px;margin:0;font-size:36px;border-radius:18px;box-shadow:0 4px 14px #482c4220}
 @media(max-width:630px){
  .focus-screen{padding-left:10px;padding-right:10px;gap:8px}
  .focus-brand{font-size:19px}
@@ -537,7 +537,7 @@ html,body,#root{max-width:100%;overflow-x:clip}
  .focus-prayer-grid.spotlight .focus-snapshot-text{gap:18px}
  .focus-prayer-grid.spotlight .focus-snapshot-text strong{font-size:clamp(27px,7.4vw,36px)}
  .focus-prayer-grid.spotlight .focus-snapshot-text small{font-size:clamp(19px,5vw,23px);line-height:1.72;-webkit-line-clamp:9}
- .focus-prayer-grid.spotlight .focus-snapshot-heart{bottom:24px;right:24px;flex-basis:52px;width:52px;height:52px;font-size:34px}
+ .focus-prayer-grid.spotlight .focus-snapshot-heart{top:18px;right:18px;bottom:auto;flex-basis:52px;width:52px;height:52px;font-size:34px}
  .focus-bottom{font-size:10px}
 }
 @media(max-height:690px){
