@@ -600,6 +600,11 @@ html,body,#root{max-width:100%;overflow-x:clip}
 .focus-prayer-grid.spotlight .focus-snapshot-open{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;justify-content:safe center}
 .focus-prayer-grid.spotlight .focus-snapshot-text{max-height:none;overflow:visible;flex:0 0 auto}
 .focus-prayer-grid.spotlight .focus-snapshot-text strong,.focus-prayer-grid.spotlight .focus-snapshot-text small{display:block;overflow:visible;-webkit-line-clamp:unset}
+
+/* 기도하기 단일 카드: 불필요한 번호 대신 본문 공간을 확보하고 하트를 독립된 상단 레이어에 둡니다. */
+.focus-prayer-grid.spotlight .focus-snapshot-text{padding-top:36px}
+.focus-prayer-grid.spotlight .focus-snapshot-heart{position:absolute;z-index:2;top:12px;right:12px;bottom:auto;flex:0 0 32px;width:32px;height:32px;min-height:32px;margin:0;font-size:21px;border-radius:10px}
+@media(max-width:630px){.focus-prayer-grid.spotlight .focus-snapshot-heart{top:11px;right:11px;flex-basis:30px;width:30px;height:30px;min-height:30px;font-size:20px}}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 </head>
@@ -933,7 +938,7 @@ function App(){
            const checked=isChecked(p,today);
            return <article className={"focus-snapshot "+(checked?"checked":"")} key={prayerKey(p)}>
              <button type="button" className="focus-snapshot-open" onClick={()=>setFocusDetailId(prayerKey(p))} title="기도 내용 자세히 보기">
-               <span className="focus-snapshot-num">{focusVisibleItems.length===1?"오늘의 기도":String(focusSheet*focusPageCapacity+i+1).padStart(2,"0")}</span>
+               {focusVisibleItems.length>1&&<span className="focus-snapshot-num">{String(focusSheet*focusPageCapacity+i+1).padStart(2,"0")}</span>}
                <span className="focus-snapshot-text"><strong>{p.title||"기도제목"}</strong>
                  {p.content&&<small>{p.content}</small>}
                </span>
