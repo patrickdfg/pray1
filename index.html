@@ -677,6 +677,7 @@ function App(){
  const [appInstalled,setAppInstalled]=useState(()=>window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone===true);
  const [focus,setFocus]=useState(-1),[ownerMembers,setOwnerMembers]=useState({}),[showMemberRoom,setShowMemberRoom]=useState("");
  const focusGestureRef=useRef(null);
+ const focusNavRef=useRef({open:false,detail:false});
  const [focusDetailId,setFocusDetailId]=useState("");
  const [focusSheet,setFocusSheet]=useState(0);
  const [focusWindow,setFocusWindow]=useState(()=>({width:window.innerWidth,height:window.innerHeight}));
@@ -753,11 +754,24 @@ function App(){
    return()=>window.removeEventListener("resize",onResize);
  },[]);
  useEffect(()=>{setFocusDetailId("");setFocusSheet(0);},[focus]);
+ useEffect(()=>{focusNavRef.current={open:focus>=0,detail:!!focusDetailId};},[focus,focusDetailId]);
+ useEffect(()=>{
+   const onHistoryBack=()=>{
+     const view=focusNavRef.current;
+     if(!view.open)return;
+     if(view.detail){
+       setFocusDetailId("");
+       window.history.pushState({pray1Focus:true},"",window.location.href);
+     }else setFocus(-1);
+   };
+   window.addEventListener("popstate",onHistoryBack);
+   return()=>window.removeEventListener("popstate",onHistoryBack);
+ },[]);
  useEffect(()=>{setFocusSheet(i=>Math.min(i,focusPageTotal-1));},[focusPageTotal]);
  useEffect(()=>{
    if(focus<0)return;
    const handleKey=e=>{
-     if(e.key==="Escape"){if(focusDetailId)setFocusDetailId("");else setFocus(-1);return;}
+     if(e.key==="Escape"){if(focusDetailId)setFocusDetailId("");else window.history.back();return;}
      if(e.target&&["INPUT","TEXTAREA","SELECT"].includes(e.target.tagName))return;
      if(e.key==="ArrowLeft")setFocus(i=>Math.max(0,i-1));
      if(e.key==="ArrowRight")setFocus(i=>Math.min(2,i+1));
@@ -796,6 +810,7 @@ function App(){
  function openJoin(r){setDraft({roomId:r.id,roomName:r.name,code:""});setModal("join");}
  function focusNow(){
    if(!activeAll.length){flash("진행 중인 기도제목이 없어요.");return;}
+   window.history.pushState({pray1Focus:true},"",window.location.href);
    setFocus(Math.max(0,focusPages.findIndex(page=>page.items.length>0)));
  }
  function startFocusSwipe(e){
@@ -924,7 +939,7 @@ function App(){
  {focus>=0&&activeAll.length>0&&<div className="focus-screen" role="dialog" aria-modal="true" aria-label="기도의 시간" onTouchStart={startFocusSwipe} onTouchEnd={endFocusSwipe} onTouchCancel={()=>{focusGestureRef.current=null;}}>
    <div className="focus-head">
      <div className="focus-head-leading">
-       <button type="button" className="focus-close focus-back" onClick={()=>focusDetailPrayer?setFocusDetailId(""):setFocus(-1)} aria-label={focusDetailPrayer?"기도목록으로 돌아가기":"기도의 시간 종료"}>〈</button>
+       <button type="button" className="focus-close focus-back" onClick={()=>focusDetailPrayer?setFocusDetailId(""):window.history.back()} aria-label={focusDetailPrayer?"기도목록으로 돌아가기":"기도의 시간 종료"}>〈</button>
        <div className="focus-brand"><strong>기도의 시간</strong></div>
      </div>
      <span className="focus-head-progress">오늘 {focusPage.items.filter(p=>isChecked(p,today)).length}/{focusCount} 기도</span>
