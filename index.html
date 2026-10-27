@@ -605,6 +605,15 @@ html,body,#root{max-width:100%;overflow-x:clip}
 .focus-prayer-grid.spotlight .focus-snapshot-text{padding-top:36px}
 .focus-prayer-grid.spotlight .focus-snapshot-heart{position:absolute;z-index:2;top:12px;right:12px;bottom:auto;flex:0 0 32px;width:32px;height:32px;min-height:32px;margin:0;font-size:21px;border-radius:10px}
 @media(max-width:630px){.focus-prayer-grid.spotlight .focus-snapshot-heart{top:11px;right:11px;flex-basis:30px;width:30px;height:30px;min-height:30px;font-size:20px}}
+
+/* 기도의 시간: 왼쪽 상단 뒤로가기와 현재 기도 진행 수를 한 줄에 배치합니다. */
+.focus-head-leading{display:flex;align-items:center;gap:9px;min-width:0}
+.focus-back{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;padding:0;font-size:28px;line-height:1}
+.focus-brand{white-space:nowrap}
+.focus-head-progress{flex:0 0 auto;color:#bdcfc8;font-size:12px;font-weight:650;white-space:nowrap}
+.focus-bottom{justify-content:center;text-align:center}
+.focus-bottom span:last-child{text-align:center}
+@media(max-width:630px){.focus-head-leading{gap:7px}.focus-back{flex-basis:38px;width:38px;height:38px;font-size:26px}.focus-brand{font-size:18px}.focus-head-progress{font-size:11px}}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 </head>
@@ -907,10 +916,13 @@ function App(){
  <div className="field"><label>기도제목 *</label><textarea required maxLength="5000" placeholder="기도할 내용을 편안하게 적어주세요." value={draft.content||""} onChange={e=>setDraft(d=>({...d,content:e.target.value}))}/></div><div className="modal-actions"><button type="button" className="outline" onClick={()=>setModal(null)}>취소</button><button className="primary" disabled={busy}>{busy?"저장 중…":"저장하기"}</button></div></form>
  :modal==="room"?<form onSubmit={createRoom}><div className="field"><label>기도방 이름 *</label><input required maxLength="80" placeholder="예: 절대 믿음 40일 기도팀" value={draft.name||""} onChange={e=>setDraft(d=>({...d,name:e.target.value}))}/></div><div className="field-row"><div className="field"><label>기도 시작일</label><input type="date" value={draft.startDate||""} onChange={e=>setDraft(d=>({...d,startDate:e.target.value}))}/></div><div className="field"><label>기도 종료일</label><input type="date" value={draft.endDate||""} onChange={e=>setDraft(d=>({...d,endDate:e.target.value}))}/></div></div><div className="field"><label>참가 비밀번호 * (4자리 이상 · 숫자 가능)</label><input required minLength="4" maxLength="64" autoComplete="off" type="password" placeholder="팀원에게 전달할 비밀번호" value={draft.code||""} onChange={e=>setDraft(d=>({...d,code:e.target.value}))}/><span className="form-help">숫자만 4자리 이상으로 설정할 수 있습니다. 추측하기 어렵도록 6자리 이상을 권장합니다. 비밀번호는 공개 목록에 표시되지 않습니다.</span></div><div className="field"><label>첫 번째 기도명 (선택)</label><input maxLength="100" placeholder="예: 우리 팀의 기도제목" value={draft.initialTitle||""} onChange={e=>setDraft(d=>({...d,initialTitle:e.target.value}))}/></div><div className="field"><label>첫 번째 기도제목 (선택)</label><textarea placeholder="첫 기도제목을 함께 등록할 수 있어요." value={draft.initialContent||""} onChange={e=>setDraft(d=>({...d,initialContent:e.target.value}))}/></div><div className="modal-actions"><button className="outline" type="button" onClick={()=>setModal(null)}>취소</button><button className="primary" disabled={busy}>{busy?"만드는 중…":"기도방 만들기"}</button></div></form>
  :<form onSubmit={joinRoom}><p style={{fontSize:14,color:"#687b6d",lineHeight:1.8}}><strong>{draft.roomName}</strong>에 참가하시려면 팀장이 알려준 비밀번호를 입력하세요.</p><div className="field"><label>기도방 비밀번호</label><input required minLength="4" maxLength="64" type="password" autoComplete="off" placeholder="4자리 이상 비밀번호 입력" value={draft.code||""} onChange={e=>setDraft(d=>({...d,code:e.target.value}))}/></div><div className="modal-actions"><button type="button" className="outline" onClick={()=>setModal(null)}>취소</button><button className="primary" disabled={busy}>{busy?"확인 중…":"기도방 참가하기"}</button></div></form>}</div></div>}
- {focus>=0&&activeAll.length>0&&<div className="focus-screen" role="dialog" aria-modal="true" aria-label="기도의 시간">
+ {focus>=0&&activeAll.length>0&&<div className="focus-screen" role="dialog" aria-modal="true" aria-label="기도의 시간" onTouchStart={startFocusSwipe} onTouchEnd={endFocusSwipe} onTouchCancel={()=>{focusGestureRef.current=null;}}>
    <div className="focus-head">
-     <div className="focus-brand"><span>🌿</span><strong>기도의 시간</strong></div>
-     <button type="button" className="focus-close" onClick={()=>setFocus(-1)} aria-label="기도의 시간 마치기">✕ 마치기</button>
+     <div className="focus-head-leading">
+       <button type="button" className="focus-close focus-back" onClick={()=>focusDetailPrayer?setFocusDetailId(""):setFocus(-1)} aria-label={focusDetailPrayer?"기도목록으로 돌아가기":"기도의 시간 종료"}>〈</button>
+       <div className="focus-brand"><strong>기도의 시간</strong></div>
+     </div>
+     <span className="focus-head-progress">오늘 {focusPage.items.filter(p=>isChecked(p,today)).length}/{focusCount} 기도</span>
    </div>
    <nav className="focus-tabs" aria-label="기도 종류 선택">
      {focusPages.map((page,i)=><button key={page.id} type="button" className={"focus-tab "+(focus===i?"selected":"")} aria-current={focus===i?"page":undefined} onClick={()=>setFocus(i)}>
@@ -918,7 +930,6 @@ function App(){
      </button>)}
    </nav>
    {focusDetailPrayer?<div className="focus-detail-view" key={focusDetailId}>
-     <div className="focus-detail-toolbar"><button type="button" onClick={()=>setFocusDetailId("")}>← 기도제목 전체보기</button><span>{focusPage.label}</span></div>
      <article className="focus-detail-paper">
        <h2>{focusDetailPrayer.title||"기도제목"}</h2>
        <p>{focusDetailPrayer.content||""}</p>
@@ -926,7 +937,7 @@ function App(){
          {isChecked(focusDetailPrayer,today)?"♥ 오늘 기도했어요":"♡ 기도했어요"}
        </button>
      </article>
-   </div>:<div className="focus-onepage" onTouchStart={startFocusSwipe} onTouchEnd={endFocusSwipe} onTouchCancel={()=>{focusGestureRef.current=null;}}>
+   </div>:<div className="focus-onepage">
      <section className="focus-overview" key={focusPage.id} aria-label={focusPage.label+" 기도제목 한 화면"}>
        <div className="focus-overview-head"><h2>{focusPage.label}</h2>
          <div className="focus-overview-meta"><span>기도제목 {focusCount}개 · 누르면 내용 보기</span>
@@ -950,8 +961,7 @@ function App(){
      </section>
    </div>}
    <div className="focus-bottom">
-     <span>♥ 오늘 {focusPage.items.filter(p=>isChecked(p,today)).length}/{focusCount} 기도</span>
-     <span>{focusDetailPrayer?"내용을 읽고 목록으로 돌아가세요.":"← 좌우로 넘기기 · 한 화면에 모두 보기 →"}</span>
+     <span>{focusDetailPrayer?"〈 뒤로가기로 기도목록 보기":"← 좌우로 넘기기 · 한 화면에 모두 보기 →"}</span>
    </div>
  </div>}
  {toast&&<div className="toast" role="status">{toast}</div>}</>;
